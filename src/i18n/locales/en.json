@@ -245,7 +245,41 @@
       "Include at least one number",
       "Include at least one special character",
       "Avoid common dictionary words"
-    ]
+    ],
+    "algorithmDetails": "Algorithm Details",
+    "algorithmDetailsDesc": "Detailed information about supported algorithms",
+    "symmetricEncryption": "Symmetric Encryption",
+    "asymmetricEncryption": "Asymmetric Encryption",
+    "hashAlgorithms": "Hash Algorithms",
+    "status": {
+      "recommended": "Recommended",
+      "secure": "Secure",
+      "legacy": "Legacy",
+      "notRecommended": "Not Recommended",
+      "deprecated": "Deprecated"
+    },
+    "algorithms": {
+      "aes256gcm": "Advanced Encryption Standard with Galois/Counter Mode",
+      "aes256cbc": "AES with Cipher Block Chaining",
+      "aes256ctr": "AES with Counter mode",
+      "aes256ecb": "AES with Electronic Codebook (not recommended for multiple blocks)",
+      "3des": "Triple DES - legacy algorithm",
+      "des": "Data Encryption Standard - obsolete",
+      "blowfish": "Symmetric block cipher",
+      "rc4": "Stream cipher - has vulnerabilities",
+      "rabbit": "High-speed stream cipher",
+      "rsa2048": "RSA with 2048-bit key",
+      "rsa3072": "RSA with 3072-bit key",
+      "rsa4096": "RSA with 4096-bit key",
+      "ecc256": "Elliptic Curve Cryptography",
+      "ecc384": "ECC with P-384 curve",
+      "sha256": "Secure Hash Algorithm 256-bit",
+      "sha512": "Secure Hash Algorithm 512-bit",
+      "sha3": "Latest SHA family",
+      "ripemd160": "RIPE Message Digest",
+      "sha1": "Being phased out",
+      "md5": "Use only for checksums"
+    }
   },
   "about": {
     "title": "About CryptoVault",

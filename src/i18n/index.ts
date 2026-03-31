@@ -1,9 +1,9 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
-import viTranslation from './locales/vi.json';
-import enTranslation from './locales/en.json';
+import viTranslation from './locales/vi.json'
+import enTranslation from './locales/en.json'
 
 const resources = {
   vi: {
@@ -12,15 +12,17 @@ const resources = {
   en: {
     translation: enTranslation,
   },
-};
+}
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'vi',
+    fallbackLng: 'en',
+    lng: 'vi',
     debug: false,
+    returnEmptyString: false,
     interpolation: {
       escapeValue: false,
     },
@@ -28,22 +30,19 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
-  });
+  })
 
-export default i18n;
+export default i18n
 
-// Available languages
 export const availableLanguages = [
   { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'en', name: 'English', flag: '🇬🇧' },
-];
+]
 
-// Change language function
 export const changeLanguage = (lng: string) => {
-  i18n.changeLanguage(lng);
-};
+  i18n.changeLanguage(lng)
+}
 
-// Get current language
 export const getCurrentLanguage = () => {
-  return i18n.language;
-};
+  return i18n.language
+}

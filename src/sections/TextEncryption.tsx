@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Lock, 
-  Unlock, 
-  Copy, 
-  RefreshCw, 
-  Trash2, 
+import {
+  Lock,
+  Unlock,
+  Copy,
+  RefreshCw,
+  Trash2,
   AlertTriangle,
   Key,
   Info
@@ -42,6 +42,7 @@ import {
 } from '@/crypto';
 import { checkPasswordStrength, getPasswordStrengthTextColor, generateStrongPassword } from '@/utils/passwordStrength';
 import { copyToClipboard } from '@/utils/clipboard';
+import { useAppT } from '@/lib/i18n';
 import type { RSAKeyPair } from '@/crypto';
 
 const symmetricAlgorithms = [
@@ -64,23 +65,21 @@ const asymmetricAlgorithms = [
 
 export default function TextEncryption() {
   const { t } = useTranslation();
+  const { tr } = useAppT();
   const [activeTab, setActiveTab] = useState('encrypt');
-  
-  // Encryption state
+
   const [encryptText, setEncryptText] = useState('');
   const [encryptKey, setEncryptKey] = useState('');
   const [encryptAlgorithm, setEncryptAlgorithm] = useState('AES-256-GCM');
   const [encryptedResult, setEncryptedResult] = useState('');
   const [isEncrypting, setIsEncrypting] = useState(false);
-  
-  // Decryption state
+
   const [decryptText, setDecryptText] = useState('');
   const [decryptKey, setDecryptKey] = useState('');
   const [decryptAlgorithm, setDecryptAlgorithm] = useState('AES-256-GCM');
   const [decryptedResult, setDecryptedResult] = useState('');
   const [isDecrypting, setIsDecrypting] = useState(false);
-  
-  // RSA state
+
   const [rsaKeyPair, setRsaKeyPair] = useState<RSAKeyPair | null>(null);
   const [isGeneratingKeys, setIsGeneratingKeys] = useState(false);
 
@@ -89,26 +88,27 @@ export default function TextEncryption() {
 
   const handleEncrypt = async () => {
     if (!encryptText.trim()) {
-      toast.error(t('errors.emptyInput'));
+      toast.error(tr('errors.emptyInput', 'Please enter data'));
       return;
     }
-    if (!encryptKey.trim()) {
-      toast.error(t('errors.missingKey'));
+    if (!encryptKey.trim() && !isAsymmetric(encryptAlgorithm)) {
+      toast.error(tr('errors.missingKey', 'Please enter a key'));
       return;
     }
 
     setIsEncrypting(true);
     try {
       let result = '';
-      
+
       switch (encryptAlgorithm) {
         case 'AES-256-GCM':
         case 'AES-256-CBC':
         case 'AES-256-ECB':
-        case 'AES-256-CTR':
+        case 'AES-256-CTR': {
           const mode = encryptAlgorithm.split('-')[2];
           result = aesEncrypt(encryptText, encryptKey, mode);
           break;
+        }
         case 'DES':
           result = desEncrypt(encryptText, encryptKey);
           break;
@@ -128,7 +128,7 @@ export default function TextEncryption() {
         case 'RSA-3072':
         case 'RSA-4096':
           if (!rsaKeyPair) {
-            toast.error('Please generate RSA keys first');
+            toast.error(tr('textEncryption.generateKeysFirst', 'Please generate RSA keys first'));
             setIsEncrypting(false);
             return;
           }
@@ -137,11 +137,11 @@ export default function TextEncryption() {
         default:
           result = aesEncrypt(encryptText, encryptKey);
       }
-      
+
       setEncryptedResult(result);
-      toast.success(t('common.success'));
+      toast.success(tr('success.encrypted', 'Encryption successful'));
     } catch (error) {
-      toast.error(t('errors.encryptionFailed'));
+      toast.error(tr('errors.encryptionFailed', 'Encryption failed'));
       console.error(error);
     } finally {
       setIsEncrypting(false);
@@ -150,26 +150,27 @@ export default function TextEncryption() {
 
   const handleDecrypt = async () => {
     if (!decryptText.trim()) {
-      toast.error(t('errors.emptyInput'));
+      toast.error(tr('errors.emptyInput', 'Please enter data'));
       return;
     }
-    if (!decryptKey.trim()) {
-      toast.error(t('errors.missingKey'));
+    if (!decryptKey.trim() && !isAsymmetric(decryptAlgorithm)) {
+      toast.error(tr('errors.missingKey', 'Please enter a key'));
       return;
     }
 
     setIsDecrypting(true);
     try {
       let result = '';
-      
+
       switch (decryptAlgorithm) {
         case 'AES-256-GCM':
         case 'AES-256-CBC':
         case 'AES-256-ECB':
-        case 'AES-256-CTR':
+        case 'AES-256-CTR': {
           const mode = decryptAlgorithm.split('-')[2];
           result = aesDecrypt(decryptText, decryptKey, mode);
           break;
+        }
         case 'DES':
           result = desDecrypt(decryptText, decryptKey);
           break;
@@ -189,7 +190,7 @@ export default function TextEncryption() {
         case 'RSA-3072':
         case 'RSA-4096':
           if (!rsaKeyPair) {
-            toast.error('Please provide RSA private key');
+            toast.error(tr('textEncryption.providePrivateKey', 'Please provide RSA private key'));
             setIsDecrypting(false);
             return;
           }
@@ -198,15 +199,15 @@ export default function TextEncryption() {
         default:
           result = aesDecrypt(decryptText, decryptKey);
       }
-      
+
       if (!result) {
-        toast.error(t('errors.decryptionFailed'));
+        toast.error(tr('errors.decryptionFailed', 'Decryption failed. Check your key and algorithm.'));
       } else {
         setDecryptedResult(result);
-        toast.success(t('common.success'));
+        toast.success(tr('success.decrypted', 'Decryption successful'));
       }
     } catch (error) {
-      toast.error(t('errors.decryptionFailed'));
+      toast.error(tr('errors.decryptionFailed', 'Decryption failed. Check your key and algorithm.'));
       console.error(error);
     } finally {
       setIsDecrypting(false);
@@ -219,9 +220,10 @@ export default function TextEncryption() {
       const bits = parseInt(encryptAlgorithm.split('-')[1]) as 2048 | 3072 | 4096;
       const keyPair = generateRSAKeyPair(bits);
       setRsaKeyPair(keyPair);
-      toast.success(t('keyGenerator.generationSuccess'));
+      toast.success(tr('success.keysGenerated', 'Key pair generated successfully'));
     } catch (error) {
-      toast.error('Failed to generate RSA keys');
+      toast.error(tr('textEncryption.keyGenerationFailed', 'Failed to generate RSA keys'));
+      console.error(error);
     } finally {
       setIsGeneratingKeys(false);
     }
@@ -234,7 +236,16 @@ export default function TextEncryption() {
     } else {
       setDecryptKey(newPassword);
     }
-    toast.success('Strong password generated!');
+    toast.success(tr('textEncryption.strongPasswordGenerated', 'Strong password generated!'));
+  };
+
+  const handleCopy = async (text: string) => {
+    try {
+      await copyToClipboard(text);
+      toast.success(tr('success.copied', 'Copied to clipboard'));
+    } catch (error) {
+      toast.error(tr('errors.generic', 'An error occurred'));
+    }
   };
 
   const clearAll = () => {
@@ -295,12 +306,9 @@ export default function TextEncryption() {
                 <Lock className="h-5 w-5" />
                 {t('textEncryption.encryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('textEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('textEncryption.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="encrypt-algorithm">{t('textEncryption.algorithmLabel')}</Label>
                 <Select value={encryptAlgorithm} onValueChange={setEncryptAlgorithm}>
@@ -331,8 +339,7 @@ export default function TextEncryption() {
                     ))}
                   </SelectContent>
                 </Select>
-                
-                {/* Algorithm Info */}
+
                 <div className="flex items-center gap-2 text-sm">
                   <TooltipProvider>
                     <Tooltip>
@@ -343,7 +350,9 @@ export default function TextEncryption() {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Security: {securityLevel}</p>
+                        <p>
+                          {tr('textEncryption.securityLabel', 'Security')}: {securityLevel}
+                        </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -353,13 +362,15 @@ export default function TextEncryption() {
                   <Alert variant="destructive" className="mt-2">
                     <AlertTriangle className="h-4 w-4" />
                     <AlertDescription>
-                      This algorithm is deprecated and should not be used for security purposes.
+                      {tr(
+                        'textEncryption.deprecatedWarning',
+                        'This algorithm is deprecated and should not be used for security purposes.'
+                      )}
                     </AlertDescription>
                   </Alert>
                 )}
               </div>
 
-              {/* RSA Key Generation */}
               {isAsymmetric(encryptAlgorithm) && (
                 <div className="space-y-2">
                   <Button
@@ -369,20 +380,21 @@ export default function TextEncryption() {
                     className="w-full"
                   >
                     <Key className="h-4 w-4 mr-2" />
-                    {isGeneratingKeys ? 'Generating...' : t('textEncryption.generateKeys')}
+                    {isGeneratingKeys
+                      ? tr('textEncryption.generating', 'Generating...')
+                      : t('textEncryption.generateKeys')}
                   </Button>
                   {rsaKeyPair && (
                     <Alert className="mt-2">
                       <span className="text-green-500">✓</span>
                       <AlertDescription>
-                        RSA keys generated successfully!
+                        {tr('textEncryption.rsaKeysGenerated', 'RSA keys generated successfully!')}
                       </AlertDescription>
                     </Alert>
                   )}
                 </div>
               )}
 
-              {/* Input Text */}
               <div className="space-y-2">
                 <Label htmlFor="encrypt-input">{t('textEncryption.inputLabel')}</Label>
                 <Textarea
@@ -394,7 +406,6 @@ export default function TextEncryption() {
                 />
               </div>
 
-              {/* Key Input */}
               {!isAsymmetric(encryptAlgorithm) && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -415,8 +426,7 @@ export default function TextEncryption() {
                     value={encryptKey}
                     onChange={(e) => setEncryptKey(e.target.value)}
                   />
-                  
-                  {/* Password Strength */}
+
                   {encryptKey && (
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-sm">
@@ -425,10 +435,7 @@ export default function TextEncryption() {
                           {t(`common.${passwordStrength.message}`)}
                         </span>
                       </div>
-                      <Progress 
-                        value={strengthPercentage} 
-                        className="h-2"
-                      />
+                      <Progress value={strengthPercentage} className="h-2" />
                       <p className="text-xs text-muted-foreground">
                         {t('textEncryption.passwordHint')}
                       </p>
@@ -437,7 +444,6 @@ export default function TextEncryption() {
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex gap-2">
                 <Button
                   onClick={handleEncrypt}
@@ -456,7 +462,6 @@ export default function TextEncryption() {
                 </Button>
               </div>
 
-              {/* Result */}
               {encryptedResult && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -465,7 +470,7 @@ export default function TextEncryption() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(encryptedResult)}
+                        onClick={() => handleCopy(encryptedResult)}
                       >
                         <Copy className="h-4 w-4 mr-1" />
                         {t('common.copy')}
@@ -499,12 +504,9 @@ export default function TextEncryption() {
                 <Unlock className="h-5 w-5" />
                 {t('textEncryption.decryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('textEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('textEncryption.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="decrypt-algorithm">{t('textEncryption.algorithmLabel')}</Label>
                 <Select value={decryptAlgorithm} onValueChange={setDecryptAlgorithm}>
@@ -532,7 +534,6 @@ export default function TextEncryption() {
                 </Select>
               </div>
 
-              {/* Input Text */}
               <div className="space-y-2">
                 <Label htmlFor="decrypt-input">{t('textEncryption.inputLabel')}</Label>
                 <Textarea
@@ -544,7 +545,6 @@ export default function TextEncryption() {
                 />
               </div>
 
-              {/* Key Input */}
               {!isAsymmetric(decryptAlgorithm) && (
                 <div className="space-y-2">
                   <Label htmlFor="decrypt-key">{t('textEncryption.keyLabel')}</Label>
@@ -558,13 +558,12 @@ export default function TextEncryption() {
                 </div>
               )}
 
-              {/* RSA Private Key Input */}
               {isAsymmetric(decryptAlgorithm) && (
                 <div className="space-y-2">
                   <Label htmlFor="private-key">{t('textEncryption.privateKey')}</Label>
                   <Textarea
                     id="private-key"
-                    placeholder="Paste RSA private key here..."
+                    placeholder={tr('textEncryption.privateKeyPlaceholder', 'Paste RSA private key here...')}
                     value={rsaKeyPair?.privateKey || ''}
                     onChange={(e) => {
                       if (rsaKeyPair) {
@@ -576,7 +575,6 @@ export default function TextEncryption() {
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex gap-2">
                 <Button
                   onClick={handleDecrypt}
@@ -596,7 +594,6 @@ export default function TextEncryption() {
                 </Button>
               </div>
 
-              {/* Result */}
               {decryptedResult && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -605,7 +602,7 @@ export default function TextEncryption() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(decryptedResult)}
+                        onClick={() => handleCopy(decryptedResult)}
                       >
                         <Copy className="h-4 w-4 mr-1" />
                         {t('common.copy')}

@@ -77,12 +77,17 @@
     "supportedAlgorithmsDesc": "Các thuật toán mã hóa tiêu chuẩn trong tầm tay bạn",
     "clientSideOnly": "Chỉ phía máy khách",
     "multiLanguage": "Đa ngôn ngữ",
+    "multiLanguageDesc": "Hỗ trợ tiếng Việt và tiếng Anh. Sẽ có thêm ngôn ngữ trong thời gian tới.",
     "openSource": "Mã nguồn mở",
+    "openSourceDesc": "Mã nguồn có sẵn trên GitHub để minh bạch và cộng đồng cùng đóng góp.",
     "quickStartGuide": "Hướng dẫn bắt đầu nhanh",
     "quickStartGuideDesc": "Bắt đầu mã hóa chỉ với 3 bước đơn giản",
     "chooseAlgorithm": "Chọn thuật toán",
+    "chooseAlgorithmDesc": "Chọn thuật toán mã hóa phù hợp với nhu cầu bảo mật của bạn.",
     "enterData": "Nhập dữ liệu",
+    "enterDataDesc": "Nhập văn bản hoặc tải tệp bạn muốn mã hóa hay băm.",
     "getResult": "Nhận kết quả",
+    "getResultDesc": "Sao chép hoặc tải xuống dữ liệu đã mã hóa, giá trị băm hoặc khóa được tạo.",
     "readyToSecure": "Sẵn sàng bảo vệ dữ liệu của bạn?"
   },
   "textEncryption": {

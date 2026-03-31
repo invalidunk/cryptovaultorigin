@@ -324,6 +324,15 @@
     "missingFile": "Vui lòng chọn tệp",
     "browserNotSupported": "Trình duyệt không được hỗ trợ"
   },
+  "success": {
+  "copied": "Đã sao chép vào clipboard",
+  "encrypted": "Mã hóa thành công",
+  "decrypted": "Giải mã thành công",
+  "hashGenerated": "Đã tạo giá trị băm thành công",
+  "keysGenerated": "Đã tạo cặp khóa thành công",
+  "fileDownloaded": "Tệp đã được tải xuống",
+  "imageUploaded": "Hình ảnh đã được tải lên thành công"
+},
   "footer": {
     "copyright": "Bản quyền",
     "allRightsReserved": "Đã đăng ký Bản quyền",

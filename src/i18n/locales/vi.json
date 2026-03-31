@@ -218,7 +218,7 @@
     "subtitle": "Hướng dẫn sử dụng chi tiết cho tất cả tính năng",
     "gettingStarted": "Bắt đầu",
     "encryptionGuide": "Hướng dẫn Mã hóa",
-    "algorithms": "Thuật toán",
+    "algorithmsLabel": "Thuật toán",
     "security": "Bảo mật",
     "faq": "Câu hỏi Thường gặp",
     "introduction": "Giới thiệu",
@@ -283,7 +283,7 @@
       "notRecommended": "Không khuyến nghị",
       "deprecated": "Đã lỗi thời"
     },
-    "algorithmsInfo": {
+    "algorithmInfo": {
       "aes256gcm": "Chuẩn mã hóa nâng cao với chế độ Galois/Counter",
       "aes256cbc": "AES với chế độ Cipher Block Chaining",
       "aes256ctr": "AES với chế độ Counter",

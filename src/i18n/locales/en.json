@@ -260,6 +260,21 @@
     "version": "Version",
     "madeWith": "Made with",
     "by": "by"
+    "featureTextEncryptionTitle": "Text Encryption",
+"featureTextEncryptionDesc": "Encrypt and decrypt text using industry-standard algorithms.",
+"featureImageEncryptionTitle": "Image Encryption",
+"featureImageEncryptionDesc": "Secure your images with strong encryption methods.",
+"featureHashingTitle": "Data Hashing",
+"featureHashingDesc": "Generate hash values for data integrity verification.",
+"featureKeyGenerationTitle": "Key Generation",
+"featureKeyGenerationDesc": "Generate RSA and ECC key pairs for asymmetric encryption.",
+"noDataSent": "No data sent to servers",
+"allProcessingBrowser": "All processing in browser",
+"noTracking": "No tracking or analytics",
+"viewOnGithub": "View on GitHub",
+"algorithmsDesc": "Comprehensive list of supported encryption and hashing algorithms",
+"techStack": "Technology Stack",
+"techStackDesc": "Built with modern web technologies"
   },
   "errors": {
     "generic": "An error occurred",

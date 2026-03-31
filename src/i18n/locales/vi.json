@@ -2,7 +2,7 @@
   "app": {
     "name": "CryptoVault",
     "tagline": "Công cụ Mã hóa & Giải mã Bảo mật",
-    "description": "Bảo vệ dữ liệu của bạn với các thuật toán mã hóa hiện đại nhất"
+    "description": "Bảo vệ dữ liệu của bạn với các thuật toán mã hóa hiện đại"
   },
   "nav": {
     "home": "Trang chủ",
@@ -56,7 +56,34 @@
     "selectFile": "Chọn tệp",
     "browse": "Duyệt",
     "maxSize": "Kích thước tối đa",
-    "supportedFormats": "Định dạng được hỗ trợ"
+    "supportedFormats": "Định dạng được hỗ trợ",
+    "language": "Ngôn ngữ",
+    "start": "Bắt đầu",
+    "readMore": "Xem thêm",
+    "backToHome": "Về trang chủ"
+  },
+  "home": {
+    "startEncrypting": "Bắt đầu mã hóa",
+    "readDocumentation": "Xem tài liệu",
+    "textEncryptionTitle": "Mã hóa văn bản",
+    "textEncryptionDesc": "Mã hóa và giải mã văn bản bằng các thuật toán AES, DES, 3DES, Blowfish, RC4, Rabbit và RSA.",
+    "imageEncryptionTitle": "Mã hóa hình ảnh",
+    "imageEncryptionDesc": "Bảo vệ hình ảnh bằng mã hóa mạnh. Hỗ trợ PNG, JPG, GIF và WEBP.",
+    "hashingTitle": "Băm dữ liệu",
+    "hashingDesc": "Tạo giá trị băm an toàn để xác minh tính toàn vẹn của dữ liệu.",
+    "keyGeneratorTitle": "Tạo khóa",
+    "keyGeneratorDesc": "Tạo khóa RSA và các khóa cần thiết cho mã hóa hiện đại.",
+    "supportedAlgorithms": "Thuật toán được hỗ trợ",
+    "supportedAlgorithmsDesc": "Các thuật toán mã hóa tiêu chuẩn trong tầm tay bạn",
+    "clientSideOnly": "Chỉ phía máy khách",
+    "multiLanguage": "Đa ngôn ngữ",
+    "openSource": "Mã nguồn mở",
+    "quickStartGuide": "Hướng dẫn bắt đầu nhanh",
+    "quickStartGuideDesc": "Bắt đầu mã hóa chỉ với 3 bước đơn giản",
+    "chooseAlgorithm": "Chọn thuật toán",
+    "enterData": "Nhập dữ liệu",
+    "getResult": "Nhận kết quả",
+    "readyToSecure": "Sẵn sàng bảo vệ dữ liệu của bạn?"
   },
   "textEncryption": {
     "title": "Mã hóa & Giải mã Văn bản",
@@ -165,7 +192,7 @@
     "security": "Bảo mật",
     "faq": "Câu hỏi Thường gặp",
     "introduction": "Giới thiệu",
-    "introText": "CryptoVault là công cụ mã hóa toàn diện cung cấp nhiều thuật toán mã hóa để bảo vệ dữ liệu của bạn. Tất cả quá trình mã hóa được thực hiện trong trình duyệt, đảm bảo dữ liệu của bạn không bao giờ rồi khỏi thiết bị.",
+    "introText": "CryptoVault là công cụ mã hóa toàn diện cung cấp nhiều thuật toán mã hóa để bảo vệ dữ liệu của bạn. Tất cả quá trình mã hóa được thực hiện trong trình duyệt, đảm bảo dữ liệu của bạn không bao giờ rời khỏi thiết bị.",
     "features": "Tính năng",
     "featureList": [
       "Mã hóa văn bản với nhiều thuật toán",
@@ -173,7 +200,7 @@
       "Băm dữ liệu để xác minh tính toàn vẹn",
       "Tạo cặp khóa RSA và ECC",
       "Hỗ trợ đa ngôn ngữ",
-      "Hoàn toàn phía máy khách - dữ liệu không rồi khỏi thiết bị"
+      "Hoàn toàn phía máy khách - dữ liệu không rời khỏi thiết bị"
     ],
     "howToEncrypt": "Cách Mã hóa Văn bản",
     "encryptSteps": [
@@ -217,11 +244,11 @@
   },
   "about": {
     "title": "Giới thiệu về CryptoVault",
-    "description": "CryptoVault là công cụ mã hóa toàn diện được thiết kế để giúp ngườii dùng bảo vệ dữ liệu của họ bằng các thuật toán mã hóa hiện đại.",
+    "description": "CryptoVault là công cụ mã hóa toàn diện được thiết kế để giúp người dùng bảo vệ dữ liệu của họ bằng các thuật toán mã hóa hiện đại.",
     "features": "Tính năng Chính",
     "security": "Bảo mật",
     "privacy": "Quyền riêng tư",
-    "privacyText": "Tất cả quá trình mã hóa diễn ra trong trình duyệt của bạn. Dữ liệu không bao giờ rồi khỏi thiết bị.",
+    "privacyText": "Tất cả quá trình mã hóa diễn ra trong trình duyệt của bạn. Dữ liệu không bao giờ rời khỏi thiết bị.",
     "openSource": "Mã nguồn Mở",
     "openSourceText": "Mã nguồn có sẵn trên GitHub để kiểm tra và đóng góp.",
     "algorithms": "Thuật toán Được hỗ trợ",
@@ -248,6 +275,7 @@
     "allRightsReserved": "Đã đăng ký Bản quyền",
     "privacyPolicy": "Chính sách Riêng tư",
     "termsOfService": "Điều khoản Dịch vụ",
-    "contact": "Liên hệ"
+    "contact": "Liên hệ",
+    "clientSideNotice": "Tất cả quá trình mã hóa được thực hiện phía máy khách. Dữ liệu của bạn không rời khỏi thiết bị."
   }
 }

@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import Navigation from '@/components/Navigation';
-import { useTranslation } from 'react-i18next';
+import { useAppT } from '@/lib/i18n';
 import './i18n';
 
 const Home = lazy(() => import('@/sections/Home'));
@@ -45,7 +45,7 @@ function App() {
 }
 
 function Footer() {
-  const { t } = useTranslation();
+  const { tr } = useAppT();
 
   return (
     <footer className="border-t mt-auto">
@@ -53,16 +53,16 @@ function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              © 2024 CryptoVault. {t('footer.rightsReserved')}
+              © 2024 CryptoVault. {tr('footer.allRightsReserved', 'All Rights Reserved')}
             </span>
           </div>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">
-              {t('footer.privacyPolicy')}
+              {tr('footer.privacyPolicy', 'Privacy Policy')}
             </a>
             <a href="#" className="hover:text-foreground transition-colors">
-              {t('footer.termsOfService')}
+              {tr('footer.termsOfService', 'Terms of Service')}
             </a>
             <a
               href="https://github.com"
@@ -76,7 +76,12 @@ function Footer() {
         </div>
 
         <div className="mt-4 text-center text-xs text-muted-foreground">
-          <p>{t('footer.clientSideNotice')}</p>
+          <p>
+            {tr(
+              'footer.clientSideNotice',
+              'All encryption is performed client-side. Your data never leaves your device.'
+            )}
+          </p>
         </div>
       </div>
     </footer>

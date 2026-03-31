@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { 
-  Shield, 
-  Lock, 
-  Hash, 
-  Key, 
-  FileText, 
+import {
+  Shield,
+  Lock,
+  Hash,
+  Key,
+  FileText,
   Image as ImageIcon,
   Info,
   Menu,
@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { availableLanguages, changeLanguage, getCurrentLanguage } from '@/i18n';
+import { useAppT } from '@/lib/i18n';
 
 const navItems = [
   { path: '/', label: 'nav.home', icon: Shield },
@@ -36,6 +37,7 @@ const navItems = [
 
 export default function Navigation() {
   const { t } = useTranslation();
+  const { tr } = useAppT();
   const [isOpen, setIsOpen] = useState(false);
   const currentLang = getCurrentLanguage();
 
@@ -43,18 +45,17 @@ export default function Navigation() {
     changeLanguage(langCode);
   };
 
-  const currentLanguage = availableLanguages.find(lang => lang.code === currentLang) || availableLanguages[0];
+  const currentLanguage =
+    availableLanguages.find((lang) => lang.code === currentLang) || availableLanguages[0];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2 mr-6">
           <Shield className="h-6 w-6 text-primary" />
           <span className="font-bold text-lg hidden sm:inline">{t('app.name')}</span>
         </NavLink>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-1 flex-1">
           {navItems.map((item) => (
             <NavLink
@@ -74,9 +75,7 @@ export default function Navigation() {
           ))}
         </nav>
 
-        {/* Right Side Actions */}
         <div className="flex items-center gap-2 ml-auto">
-          {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="flex items-center gap-2">
@@ -99,11 +98,10 @@ export default function Navigation() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* GitHub Link */}
           <Button variant="ghost" size="icon" asChild className="hidden sm:flex">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
+            <a
+              href="https://github.com"
+              target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
             >
@@ -111,7 +109,6 @@ export default function Navigation() {
             </a>
           </Button>
 
-          {/* Mobile Menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">
@@ -124,7 +121,7 @@ export default function Navigation() {
                   <Shield className="h-6 w-6 text-primary" />
                   <span className="font-bold text-lg">{t('app.name')}</span>
                 </div>
-                
+
                 <nav className="flex flex-col gap-1">
                   {navItems.map((item) => (
                     <NavLink
@@ -147,7 +144,9 @@ export default function Navigation() {
 
                 <div className="mt-auto pt-4 border-t">
                   <div className="flex items-center gap-2 px-3">
-                    <span className="text-sm text-muted-foreground">Language:</span>
+                    <span className="text-sm text-muted-foreground">
+                      {tr('common.language', 'Language')}:
+                    </span>
                     <div className="flex gap-1">
                       {availableLanguages.map((lang) => (
                         <Button

@@ -77,12 +77,17 @@
     "supportedAlgorithmsDesc": "Industry-standard encryption algorithms at your fingertips",
     "clientSideOnly": "Client-Side Only",
     "multiLanguage": "Multi-Language",
+    "multiLanguageDesc": "Available in Vietnamese and English. More languages coming soon.",
     "openSource": "Open Source",
+    "openSourceDesc": "Source code available on GitHub for transparency and community contributions.",
     "quickStartGuide": "Quick Start Guide",
     "quickStartGuideDesc": "Start encrypting in just 3 simple steps",
     "chooseAlgorithm": "Choose Algorithm",
+    "chooseAlgorithmDesc": "Select from various encryption algorithms based on your security needs.",
     "enterData": "Enter Data",
+    "enterDataDesc": "Input your text or upload files you want to encrypt or hash.",
     "getResult": "Get Result",
+    "getResultDesc": "Copy or download your encrypted data, hash, or generated keys.",
     "readyToSecure": "Ready to secure your data?"
   },
   "textEncryption": {

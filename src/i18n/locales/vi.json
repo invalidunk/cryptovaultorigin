@@ -245,7 +245,41 @@
       "Bao gồm ít nhất một số",
       "Bao gồm ít nhất một ký tự đặc biệt",
       "Tránh sử dụng từ điển phổ biến"
-    ]
+    ],
+    "algorithmDetails": "Chi tiết Thuật toán",
+    "algorithmDetailsDesc": "Thông tin chi tiết về các thuật toán được hỗ trợ",
+    "symmetricEncryption": "Mã hóa Đối xứng",
+    "asymmetricEncryption": "Mã hóa Bất đối xứng",
+    "hashAlgorithms": "Thuật toán Băm",
+    "status": {
+      "recommended": "Khuyến nghị",
+      "secure": "An toàn",
+      "legacy": "Cũ",
+      "notRecommended": "Không khuyến nghị",
+      "deprecated": "Đã lỗi thời"
+    },
+    "algorithms": {
+      "aes256gcm": "Chuẩn mã hóa nâng cao với chế độ Galois/Counter",
+      "aes256cbc": "AES với chế độ Cipher Block Chaining",
+      "aes256ctr": "AES với chế độ Counter",
+      "aes256ecb": "AES với chế độ Electronic Codebook (không khuyến nghị cho nhiều khối)",
+      "3des": "Triple DES - thuật toán cũ",
+      "des": "Chuẩn mã hóa dữ liệu - đã lỗi thời",
+      "blowfish": "Mã khối đối xứng",
+      "rc4": "Mã dòng - có lỗ hổng bảo mật",
+      "rabbit": "Mã dòng tốc độ cao",
+      "rsa2048": "RSA với khóa 2048-bit",
+      "rsa3072": "RSA với khóa 3072-bit",
+      "rsa4096": "RSA với khóa 4096-bit",
+      "ecc256": "Mật mã đường cong elliptic",
+      "ecc384": "ECC với đường cong P-384",
+      "sha256": "Thuật toán băm an toàn 256-bit",
+      "sha512": "Thuật toán băm an toàn 512-bit",
+      "sha3": "Thế hệ mới nhất của họ SHA",
+      "ripemd160": "RIPE Message Digest",
+      "sha1": "Đang dần bị loại bỏ",
+      "md5": "Chỉ nên dùng để kiểm tra checksum"
+    }
   },
   "about": {
     "title": "Giới thiệu về CryptoVault",

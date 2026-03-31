@@ -117,6 +117,15 @@
     "privateKey": "Khóa Riêng tư",
     "generateKeys": "Tạo Cặp Khóa",
     "useSameKey": "Sử dụng cùng khóa cho giải mã"
+    "generateKeysFirst": "Vui lòng tạo khóa RSA trước",
+"providePrivateKey": "Vui lòng cung cấp khóa riêng RSA",
+"keyGenerationFailed": "Không thể tạo khóa RSA",
+"strongPasswordGenerated": "Đã tạo mật khẩu mạnh",
+"securityLabel": "Bảo mật",
+"deprecatedWarning": "Thuật toán này đã lỗi thời và không nên dùng cho mục đích bảo mật.",
+"generating": "Đang tạo...",
+"rsaKeysGenerated": "Đã tạo khóa RSA thành công!",
+"privateKeyPlaceholder": "Dán khóa riêng RSA vào đây..."
   },
   "imageEncryption": {
     "title": "Mã hóa & Giải mã Hình ảnh",

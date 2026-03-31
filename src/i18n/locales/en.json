@@ -324,6 +324,15 @@
     "missingFile": "Please select a file",
     "browserNotSupported": "Browser not supported"
   },
+  "success": {
+  "copied": "Copied to clipboard",
+  "encrypted": "Encryption successful",
+  "decrypted": "Decryption successful",
+  "hashGenerated": "Hash generated successfully",
+  "keysGenerated": "Key pair generated successfully",
+  "fileDownloaded": "File downloaded successfully",
+  "imageUploaded": "Image uploaded successfully"
+},
   "footer": {
     "copyright": "Copyright",
     "allRightsReserved": "All Rights Reserved",

@@ -1,9 +1,8 @@
-import { useTranslation } from 'react-i18next';
-import { 
-  Shield, 
-  Lock, 
-  Hash, 
-  Key, 
+import {
+  Shield,
+  Lock,
+  Hash,
+  Key,
   Heart,
   Github,
   Globe,
@@ -14,6 +13,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAppT } from '@/lib/i18n';
 
 const supportedAlgorithms = [
   { name: 'AES-256-GCM', type: 'Symmetric', security: 'High' },
@@ -40,56 +40,72 @@ const supportedAlgorithms = [
 const features = [
   {
     icon: Lock,
-    title: 'Text Encryption',
-    description: 'Encrypt and decrypt text using industry-standard algorithms',
+    titleKey: 'about.featureTextEncryptionTitle',
+    titleFallback: 'Text Encryption',
+    descriptionKey: 'about.featureTextEncryptionDesc',
+    descriptionFallback: 'Encrypt and decrypt text using industry-standard algorithms',
   },
   {
     icon: Shield,
-    title: 'Image Encryption',
-    description: 'Secure your images with strong encryption methods',
+    titleKey: 'about.featureImageEncryptionTitle',
+    titleFallback: 'Image Encryption',
+    descriptionKey: 'about.featureImageEncryptionDesc',
+    descriptionFallback: 'Secure your images with strong encryption methods',
   },
   {
     icon: Hash,
-    title: 'Data Hashing',
-    description: 'Generate hash values for data integrity verification',
+    titleKey: 'about.featureHashingTitle',
+    titleFallback: 'Data Hashing',
+    descriptionKey: 'about.featureHashingDesc',
+    descriptionFallback: 'Generate hash values for data integrity verification',
   },
   {
     icon: Key,
-    title: 'Key Generation',
-    description: 'Generate RSA and ECC key pairs for asymmetric encryption',
+    titleKey: 'about.featureKeyGenerationTitle',
+    titleFallback: 'Key Generation',
+    descriptionKey: 'about.featureKeyGenerationDesc',
+    descriptionFallback: 'Generate RSA and ECC key pairs for asymmetric encryption',
   },
 ];
 
 export default function About() {
-  const { t } = useTranslation();
+  const { tr } = useAppT();
 
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-foreground">{t('about.title')}</h1>
+        <h1 className="text-3xl font-bold text-foreground">
+          {tr('about.title', 'About CryptoVault')}
+        </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          {t('about.description')}
+          {tr(
+            'about.description',
+            'CryptoVault is a comprehensive encryption tool designed to help users protect their data using modern encryption algorithms.'
+          )}
         </p>
       </div>
 
-      {/* Main Features */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            {t('about.features')}
+            {tr('about.features', 'Key Features')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {features.map((feature) => (
-              <div key={feature.title} className="flex items-start gap-3 p-4 rounded-lg border">
+              <div key={feature.titleKey} className="flex items-start gap-3 p-4 rounded-lg border">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <feature.icon className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h4 className="font-semibold">{feature.title}</h4>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <h4 className="font-semibold">
+                    {tr(feature.titleKey, feature.titleFallback)}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    {tr(feature.descriptionKey, feature.descriptionFallback)}
+                  </p>
                 </div>
               </div>
             ))}
@@ -97,30 +113,38 @@ export default function About() {
         </CardContent>
       </Card>
 
-      {/* Security & Privacy */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Server className="h-5 w-5" />
-              {t('about.privacy')}
+              {tr('about.privacy', 'Privacy')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              {t('about.privacyText')}
+              {tr(
+                'about.privacyText',
+                'All encryption happens in your browser. Data never leaves your device.'
+              )}
             </p>
             <div className="mt-4 flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-sm">No data sent to servers</span>
+              <span className="text-sm">
+                {tr('about.noDataSent', 'No data sent to servers')}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-sm">All processing in browser</span>
+              <span className="text-sm">
+                {tr('about.allProcessingBrowser', 'All processing in browser')}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-sm">No tracking or analytics</span>
+              <span className="text-sm">
+                {tr('about.noTracking', 'No tracking or analytics')}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -129,37 +153,42 @@ export default function About() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code className="h-5 w-5" />
-              {t('about.openSource')}
+              {tr('about.openSource', 'Open Source')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              {t('about.openSourceText')}
+              {tr(
+                'about.openSourceText',
+                'Source code is available on GitHub for inspection and contribution.'
+              )}
             </p>
             <Button variant="outline" className="mt-4 w-full" asChild>
-              <a 
-                href="https://github.com" 
-                target="_blank" 
+              <a
+                href="https://github.com"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2"
               >
                 <Github className="h-4 w-4" />
-                View on GitHub
+                {tr('about.viewOnGithub', 'View on GitHub')}
               </a>
             </Button>
           </CardContent>
         </Card>
       </div>
 
-      {/* Supported Algorithms */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5" />
-            {t('about.algorithms')}
+            {tr('about.algorithms', 'Supported Algorithms')}
           </CardTitle>
           <CardDescription>
-            Comprehensive list of supported encryption and hashing algorithms
+            {tr(
+              'about.algorithmsDesc',
+              'Comprehensive list of supported encryption and hashing algorithms'
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -171,13 +200,17 @@ export default function About() {
               >
                 <div className="flex items-center gap-2">
                   <span className="font-medium text-sm">{algo.name}</span>
-                  <Badge variant="outline" className="text-xs">{algo.type}</Badge>
+                  <Badge variant="outline" className="text-xs">
+                    {algo.type}
+                  </Badge>
                 </div>
-                <Badge 
+                <Badge
                   variant={
-                    algo.security === 'High' ? 'default' : 
-                    algo.security === 'Medium' ? 'secondary' : 
-                    'destructive'
+                    algo.security === 'High'
+                      ? 'default'
+                      : algo.security === 'Medium'
+                      ? 'secondary'
+                      : 'destructive'
                   }
                   className="text-xs"
                 >
@@ -189,28 +222,32 @@ export default function About() {
         </CardContent>
       </Card>
 
-      {/* Tech Stack */}
       <Card>
         <CardHeader>
-          <CardTitle>Technology Stack</CardTitle>
+          <CardTitle>{tr('about.techStack', 'Technology Stack')}</CardTitle>
           <CardDescription>
-            Built with modern web technologies
+            {tr('about.techStackDesc', 'Built with modern web technologies')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Crypto-JS', 'Node-Forge'].map((tech) => (
-              <Badge key={tech} variant="secondary">{tech}</Badge>
+              <Badge key={tech} variant="secondary">
+                {tech}
+              </Badge>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Version Info */}
       <div className="text-center text-sm text-muted-foreground">
-        <p>{t('about.version')} 1.0.0</p>
+        <p>
+          {tr('about.version', 'Version')} 1.0.0
+        </p>
         <p className="flex items-center justify-center gap-1 mt-1">
-          {t('about.madeWith')} <Heart className="h-4 w-4 text-red-500 fill-red-500" /> {t('about.by')} CryptoVault Team
+          {tr('about.madeWith', 'Made with')}
+          <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+          {tr('about.by', 'by')} CryptoVault Team
         </p>
       </div>
     </div>

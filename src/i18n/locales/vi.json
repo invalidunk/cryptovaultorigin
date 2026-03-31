@@ -32,6 +32,8 @@
     "info": "Thông tin",
     "loading": "Đang tải...",
     "processing": "Đang xử lý...",
+    "generating": "Đang tạo...",
+    "verify": "Xác minh",
     "input": "Đầu vào",
     "output": "Đầu ra",
     "key": "Khóa",
@@ -116,16 +118,16 @@
     "publicKey": "Khóa Công khai",
     "privateKey": "Khóa Riêng tư",
     "generateKeys": "Tạo Cặp Khóa",
-    "useSameKey": "Sử dụng cùng khóa cho giải mã"
+    "useSameKey": "Sử dụng cùng khóa cho giải mã",
     "generateKeysFirst": "Vui lòng tạo khóa RSA trước",
-"providePrivateKey": "Vui lòng cung cấp khóa riêng RSA",
-"keyGenerationFailed": "Không thể tạo khóa RSA",
-"strongPasswordGenerated": "Đã tạo mật khẩu mạnh",
-"securityLabel": "Bảo mật",
-"deprecatedWarning": "Thuật toán này đã lỗi thời và không nên dùng cho mục đích bảo mật.",
-"generating": "Đang tạo...",
-"rsaKeysGenerated": "Đã tạo khóa RSA thành công!",
-"privateKeyPlaceholder": "Dán khóa riêng RSA vào đây..."
+    "providePrivateKey": "Vui lòng cung cấp khóa riêng RSA",
+    "keyGenerationFailed": "Không thể tạo khóa RSA",
+    "strongPasswordGenerated": "Đã tạo mật khẩu mạnh",
+    "securityLabel": "Bảo mật",
+    "deprecatedWarning": "Thuật toán này đã lỗi thời và không nên dùng cho mục đích bảo mật.",
+    "generating": "Đang tạo...",
+    "rsaKeysGenerated": "Đã tạo khóa RSA thành công!",
+    "privateKeyPlaceholder": "Dán khóa riêng RSA vào đây..."
   },
   "imageEncryption": {
     "title": "Mã hóa & Giải mã Hình ảnh",
@@ -151,13 +153,16 @@
     "encryptionSuccess": "Hình ảnh đã được mã hóa thành công",
     "decryptionSuccess": "Hình ảnh đã được giải mã thành công",
     "invalidImage": "Vui lòng chọn tệp hình ảnh hợp lệ",
-    "fileTooLarge": "Tệp quá lớn. Kích thước tối đa là 10MB"
+    "fileTooLarge": "Tệp quá lớn. Kích thước tối đa là 10MB",
+    "selectEncryptedFile": "Chọn tệp đã mã hóa"
   },
   "hashing": {
     "title": "Băm Dữ liệu",
     "subtitle": "Tạo giá trị băm cho văn bản và tệp",
     "textHashing": "Băm Văn bản",
     "fileHashing": "Băm Tệp",
+    "textHashingDesc": "Tạo giá trị băm cho văn bản đầu vào",
+    "fileHashingDesc": "Tính giá trị băm cho bất kỳ tệp nào",
     "inputLabel": "Văn bản cần băm",
     "inputPlaceholder": "Nhập văn bản để tạo giá trị băm...",
     "algorithmLabel": "Thuật toán Băm",
@@ -165,27 +170,36 @@
     "hashButton": "Tạo Giá trị Băm",
     "resultLabel": "Giá trị Băm",
     "verifyHash": "Xác minh Băm",
+    "verifyButton": "Xác minh",
     "compareHash": "So sánh với",
     "match": "Khớp",
     "noMatch": "Không khớp",
     "hmacSection": "HMAC (Mã Xác thực Tin nhắn)",
     "hmacKey": "Khóa HMAC",
+    "hmacKeyPlaceholder": "Nhập khóa HMAC...",
+    "missingHmacKey": "Vui lòng nhập khóa HMAC",
     "generateHMAC": "Tạo HMAC",
     "fileUpload": "Tải lên Tệp để Băm",
     "dragDropFile": "Kéo và thả tệp vào đây",
     "calculateFileHash": "Tính Băm Tệp",
-    "fileHashResult": "Băm của Tệp"
+    "fileHashResult": "Băm của Tệp",
+    "hashingFailed": "Tạo giá trị băm thất bại",
+    "fileHashingFailed": "Băm tệp thất bại"
   },
   "keyGenerator": {
     "title": "Tạo Khóa Mã hóa",
     "subtitle": "Tạo cặp khóa cho mã hóa bất đối xứng",
     "rsaSection": "Tạo Khóa RSA",
     "eccSection": "Tạo Khóa ECC",
+    "rsaDescription": "Tạo cặp khóa RSA cho mã hóa bất đối xứng",
+    "eccDescription": "Tạo cặp khóa ECC cho mã hóa bất đối xứng hiệu quả",
     "keySizeLabel": "Kích thước Khóa",
     "selectKeySize": "Chọn kích thước khóa",
     "curveLabel": "Đường cong Elliptic",
     "selectCurve": "Chọn đường cong",
     "generateButton": "Tạo Cặp Khóa",
+    "generating": "Đang tạo...",
+    "generatingHint": "Đang tạo khóa... Có thể mất một lúc",
     "publicKeyLabel": "Khóa Công khai",
     "privateKeyLabel": "Khóa Riêng tư",
     "copyPublicKey": "Sao chép Khóa Công khai",
@@ -193,6 +207,8 @@
     "downloadKeys": "Tải xuống Cặp Khóa",
     "saveWarning": "Lưu khóa riêng tư ở nơi an toàn. Không chia sẻ với bất kỳ ai!",
     "generationSuccess": "Khóa đã được tạo thành công",
+    "rsaGenerationFailed": "Không thể tạo khóa RSA",
+    "eccGenerationFailed": "Không thể tạo khóa ECC",
     "keySize2048": "2048 bit (Tiêu chuẩn)",
     "keySize3072": "3072 bit (Cao)",
     "keySize4096": "4096 bit (Tối đa)"
@@ -267,7 +283,7 @@
       "notRecommended": "Không khuyến nghị",
       "deprecated": "Đã lỗi thời"
     },
-    "algorithms": {
+    "algorithmsInfo": {
       "aes256gcm": "Chuẩn mã hóa nâng cao với chế độ Galois/Counter",
       "aes256cbc": "AES với chế độ Cipher Block Chaining",
       "aes256ctr": "AES với chế độ Counter",
@@ -334,14 +350,14 @@
     "browserNotSupported": "Trình duyệt không được hỗ trợ"
   },
   "success": {
-  "copied": "Đã sao chép vào clipboard",
-  "encrypted": "Mã hóa thành công",
-  "decrypted": "Giải mã thành công",
-  "hashGenerated": "Đã tạo giá trị băm thành công",
-  "keysGenerated": "Đã tạo cặp khóa thành công",
-  "fileDownloaded": "Tệp đã được tải xuống",
-  "imageUploaded": "Hình ảnh đã được tải lên thành công"
-},
+    "copied": "Đã sao chép vào clipboard",
+    "encrypted": "Mã hóa thành công",
+    "decrypted": "Giải mã thành công",
+    "hashGenerated": "Đã tạo giá trị băm thành công",
+    "keysGenerated": "Đã tạo cặp khóa thành công",
+    "fileDownloaded": "Tệp đã được tải xuống",
+    "imageUploaded": "Hình ảnh đã được tải lên thành công"
+  },
   "footer": {
     "copyright": "Bản quyền",
     "allRightsReserved": "Đã đăng ký Bản quyền",

@@ -2,7 +2,7 @@
   "app": {
     "name": "CryptoVault",
     "tagline": "Secure Encryption & Decryption Tool",
-    "description": "Protect your data with the world's most advanced encryption algorithms"
+    "description": "Protect your data with modern encryption algorithms"
   },
   "nav": {
     "home": "Home",
@@ -56,7 +56,34 @@
     "selectFile": "Select File",
     "browse": "Browse",
     "maxSize": "Max size",
-    "supportedFormats": "Supported formats"
+    "supportedFormats": "Supported formats",
+    "language": "Language",
+    "start": "Start",
+    "readMore": "Read More",
+    "backToHome": "Back to Home"
+  },
+  "home": {
+    "startEncrypting": "Start Encrypting",
+    "readDocumentation": "Read Documentation",
+    "textEncryptionTitle": "Text Encryption",
+    "textEncryptionDesc": "Encrypt and decrypt text using AES, DES, 3DES, Blowfish, RC4, Rabbit, and RSA.",
+    "imageEncryptionTitle": "Image Encryption",
+    "imageEncryptionDesc": "Protect your images with strong encryption. Supports PNG, JPG, GIF, and WEBP.",
+    "hashingTitle": "Data Hashing",
+    "hashingDesc": "Generate secure hash values to verify data integrity.",
+    "keyGeneratorTitle": "Key Generator",
+    "keyGeneratorDesc": "Generate RSA keys and other keys needed for modern encryption.",
+    "supportedAlgorithms": "Supported Algorithms",
+    "supportedAlgorithmsDesc": "Industry-standard encryption algorithms at your fingertips",
+    "clientSideOnly": "Client-Side Only",
+    "multiLanguage": "Multi-Language",
+    "openSource": "Open Source",
+    "quickStartGuide": "Quick Start Guide",
+    "quickStartGuideDesc": "Start encrypting in just 3 simple steps",
+    "chooseAlgorithm": "Choose Algorithm",
+    "enterData": "Enter Data",
+    "getResult": "Get Result",
+    "readyToSecure": "Ready to secure your data?"
   },
   "textEncryption": {
     "title": "Text Encryption & Decryption",
@@ -193,7 +220,7 @@
     ],
     "algorithmDescriptions": "Algorithm Descriptions",
     "aesDescription": "AES (Advanced Encryption Standard) is a widely used symmetric encryption algorithm. AES-256 uses a 256-bit key, providing very high security.",
-    "desDescription": "DES (Data Encryption Standard) is an older encryption algorithm using a 56-bit key. Not secure for modern use but kept for educational purposes.",
+    "desDescription": "DES (Data Encryption Standard) is an older encryption algorithm using a 56-bit key. It is not secure for modern use but is kept for educational purposes.",
     "rsaDescription": "RSA is an asymmetric encryption algorithm using public/private key pairs. RSA-2048 is the industry standard.",
     "eccDescription": "ECC (Elliptic Curve Cryptography) provides equivalent security to RSA with shorter keys, making it more efficient.",
     "shaDescription": "SHA (Secure Hash Algorithm) generates fixed-size hash values from input data. SHA-256 is the current standard.",
@@ -248,6 +275,7 @@
     "allRightsReserved": "All Rights Reserved",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
-    "contact": "Contact"
+    "contact": "Contact",
+    "clientSideNotice": "All encryption is performed client-side. Your data never leaves your device."
   }
 }

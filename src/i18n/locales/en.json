@@ -32,6 +32,8 @@
     "info": "Info",
     "loading": "Loading...",
     "processing": "Processing...",
+    "generating": "Generating...",
+    "verify": "Verify",
     "input": "Input",
     "output": "Output",
     "key": "Key",
@@ -116,16 +118,16 @@
     "publicKey": "Public Key",
     "privateKey": "Private Key",
     "generateKeys": "Generate Key Pair",
-    "useSameKey": "Use same key for decryption"
+    "useSameKey": "Use same key for decryption",
     "generateKeysFirst": "Please generate RSA keys first",
-"providePrivateKey": "Please provide RSA private key",
-"keyGenerationFailed": "Failed to generate RSA keys",
-"strongPasswordGenerated": "Strong password generated!",
-"securityLabel": "Security",
-"deprecatedWarning": "This algorithm is deprecated and should not be used for security purposes.",
-"generating": "Generating...",
-"rsaKeysGenerated": "RSA keys generated successfully!",
-"privateKeyPlaceholder": "Paste RSA private key here..."
+    "providePrivateKey": "Please provide RSA private key",
+    "keyGenerationFailed": "Failed to generate RSA keys",
+    "strongPasswordGenerated": "Strong password generated!",
+    "securityLabel": "Security",
+    "deprecatedWarning": "This algorithm is deprecated and should not be used for security purposes.",
+    "generating": "Generating...",
+    "rsaKeysGenerated": "RSA keys generated successfully!",
+    "privateKeyPlaceholder": "Paste RSA private key here..."
   },
   "imageEncryption": {
     "title": "Image Encryption & Decryption",
@@ -151,13 +153,16 @@
     "encryptionSuccess": "Image encrypted successfully",
     "decryptionSuccess": "Image decrypted successfully",
     "invalidImage": "Please select a valid image file",
-    "fileTooLarge": "File too large. Maximum size is 10MB"
+    "fileTooLarge": "File too large. Maximum size is 10MB",
+    "selectEncryptedFile": "Select encrypted file"
   },
   "hashing": {
     "title": "Data Hashing",
     "subtitle": "Generate hash values for text and files",
     "textHashing": "Text Hashing",
     "fileHashing": "File Hashing",
+    "textHashingDesc": "Generate hash values for text input",
+    "fileHashingDesc": "Calculate hash for any file",
     "inputLabel": "Text to Hash",
     "inputPlaceholder": "Enter text to generate hash...",
     "algorithmLabel": "Hash Algorithm",
@@ -165,27 +170,36 @@
     "hashButton": "Generate Hash",
     "resultLabel": "Hash Value",
     "verifyHash": "Verify Hash",
+    "verifyButton": "Verify",
     "compareHash": "Compare with",
     "match": "Match",
     "noMatch": "No Match",
     "hmacSection": "HMAC (Hash-based Message Authentication Code)",
     "hmacKey": "HMAC Key",
+    "hmacKeyPlaceholder": "Enter HMAC key...",
+    "missingHmacKey": "Please enter an HMAC key",
     "generateHMAC": "Generate HMAC",
     "fileUpload": "Upload File to Hash",
     "dragDropFile": "Drag and drop file here",
     "calculateFileHash": "Calculate File Hash",
-    "fileHashResult": "File Hash"
+    "fileHashResult": "File Hash",
+    "hashingFailed": "Hashing failed",
+    "fileHashingFailed": "File hashing failed"
   },
   "keyGenerator": {
     "title": "Encryption Key Generator",
     "subtitle": "Generate key pairs for asymmetric encryption",
     "rsaSection": "Generate RSA Keys",
     "eccSection": "Generate ECC Keys",
+    "rsaDescription": "Generate RSA key pairs for asymmetric encryption",
+    "eccDescription": "Generate ECC key pairs for efficient asymmetric encryption",
     "keySizeLabel": "Key Size",
     "selectKeySize": "Select key size",
     "curveLabel": "Elliptic Curve",
     "selectCurve": "Select curve",
     "generateButton": "Generate Key Pair",
+    "generating": "Generating...",
+    "generatingHint": "Generating keys... This may take a moment",
     "publicKeyLabel": "Public Key",
     "privateKeyLabel": "Private Key",
     "copyPublicKey": "Copy Public Key",
@@ -193,6 +207,8 @@
     "downloadKeys": "Download Key Pair",
     "saveWarning": "Save private key in a secure place. Never share it with anyone!",
     "generationSuccess": "Keys generated successfully",
+    "rsaGenerationFailed": "Failed to generate RSA keys",
+    "eccGenerationFailed": "Failed to generate ECC keys",
     "keySize2048": "2048 bit (Standard)",
     "keySize3072": "3072 bit (High)",
     "keySize4096": "4096 bit (Maximum)"
@@ -267,7 +283,7 @@
       "notRecommended": "Not Recommended",
       "deprecated": "Deprecated"
     },
-    "algorithms": {
+    "algorithmsInfo": {
       "aes256gcm": "Advanced Encryption Standard with Galois/Counter Mode",
       "aes256cbc": "AES with Cipher Block Chaining",
       "aes256ctr": "AES with Counter mode",
@@ -334,14 +350,14 @@
     "browserNotSupported": "Browser not supported"
   },
   "success": {
-  "copied": "Copied to clipboard",
-  "encrypted": "Encryption successful",
-  "decrypted": "Decryption successful",
-  "hashGenerated": "Hash generated successfully",
-  "keysGenerated": "Key pair generated successfully",
-  "fileDownloaded": "File downloaded successfully",
-  "imageUploaded": "Image uploaded successfully"
-},
+    "copied": "Copied to clipboard",
+    "encrypted": "Encryption successful",
+    "decrypted": "Decryption successful",
+    "hashGenerated": "Hash generated successfully",
+    "keysGenerated": "Key pair generated successfully",
+    "fileDownloaded": "File downloaded successfully",
+    "imageUploaded": "Image uploaded successfully"
+  },
   "footer": {
     "copyright": "Copyright",
     "allRightsReserved": "All Rights Reserved",

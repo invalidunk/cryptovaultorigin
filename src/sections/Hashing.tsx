@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Hash, 
-  Copy, 
-  FileText, 
-  Upload, 
+import {
+  Hash,
+  Copy,
+  FileText,
+  Upload,
   Trash2,
   AlertCircle,
   CheckCircle2,
@@ -33,6 +33,7 @@ import {
   hmacSHA512,
 } from '@/crypto';
 import { copyToClipboard } from '@/utils/clipboard';
+import { useAppT } from '@/lib/i18n';
 
 const hashAlgorithms = [
   { value: 'MD5', label: 'MD5', security: 'deprecated' },
@@ -45,34 +46,46 @@ const hashAlgorithms = [
 
 export default function Hashing() {
   const { t } = useTranslation();
+  const { tr } = useAppT();
   const [activeTab, setActiveTab] = useState('text');
-  
-  // Text hashing state
+
   const [textInput, setTextInput] = useState('');
   const [hashAlgorithm, setHashAlgorithm] = useState('SHA-256');
   const [hashResult, setHashResult] = useState('');
   const [useHMAC, setUseHMAC] = useState(false);
   const [hmacKey, setHmacKey] = useState('');
-  
-  // File hashing state
+
   const [file, setFile] = useState<File | null>(null);
   const [fileHash, setFileHash] = useState('');
   const [isHashing, setIsHashing] = useState(false);
-  
-  // Verification state
+
   const [compareHash, setCompareHash] = useState('');
   const [verificationResult, setVerificationResult] = useState<'match' | 'noMatch' | null>(null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCopy = async (text: string) => {
+    try {
+      await copyToClipboard(text);
+      toast.success(tr('success.copied', 'Copied to clipboard'));
+    } catch (error) {
+      toast.error(tr('errors.generic', 'An error occurred'));
+    }
+  };
 
   const handleTextHash = () => {
     if (!textInput.trim()) {
-      toast.error(t('errors.emptyInput'));
+      toast.error(tr('errors.emptyInput', 'Please enter data'));
+      return;
+    }
+
+    if (useHMAC && !hmacKey.trim()) {
+      toast.error(tr('hashing.missingHmacKey', 'Please enter an HMAC key'));
       return;
     }
 
     let result = '';
-    
+
     try {
       if (useHMAC && hmacKey) {
         switch (hashAlgorithm) {
@@ -115,27 +128,27 @@ export default function Hashing() {
             result = sha256Hash(textInput);
         }
       }
-      
+
       setHashResult(result);
       setVerificationResult(null);
-      toast.success(t('common.success'));
+      toast.success(tr('success.hashGenerated', 'Hash generated successfully'));
     } catch (error) {
-      toast.error('Hashing failed');
+      toast.error(tr('hashing.hashingFailed', 'Hashing failed'));
     }
   };
 
   const handleFileHash = async () => {
     if (!file) {
-      toast.error(t('errors.missingFile'));
+      toast.error(tr('errors.missingFile', 'Please select a file'));
       return;
     }
 
     setIsHashing(true);
-    
+
     try {
       const text = await file.text();
       let result = '';
-      
+
       switch (hashAlgorithm) {
         case 'MD5':
           result = md5Hash(text);
@@ -158,11 +171,11 @@ export default function Hashing() {
         default:
           result = sha256Hash(text);
       }
-      
+
       setFileHash(result);
-      toast.success(t('common.success'));
+      toast.success(tr('success.hashGenerated', 'Hash generated successfully'));
     } catch (error) {
-      toast.error('File hashing failed');
+      toast.error(tr('hashing.fileHashingFailed', 'File hashing failed'));
     } finally {
       setIsHashing(false);
     }
@@ -178,7 +191,7 @@ export default function Hashing() {
 
   const verifyHash = () => {
     if (!compareHash || !hashResult) return;
-    
+
     if (compareHash.toLowerCase() === hashResult.toLowerCase()) {
       setVerificationResult('match');
     } else {
@@ -191,6 +204,7 @@ export default function Hashing() {
     setHashResult('');
     setCompareHash('');
     setVerificationResult(null);
+    setHmacKey('');
   };
 
   const clearFile = () => {
@@ -228,11 +242,10 @@ export default function Hashing() {
                 {t('hashing.textHashing')}
               </CardTitle>
               <CardDescription>
-                Generate hash values for text input
+                {tr('hashing.textHashingDesc', 'Generate hash values for text input')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="hash-algorithm">{t('hashing.algorithmLabel')}</Label>
                 <Select value={hashAlgorithm} onValueChange={setHashAlgorithm}>
@@ -254,7 +267,6 @@ export default function Hashing() {
                 </Select>
               </div>
 
-              {/* HMAC Toggle */}
               <div className="flex items-center space-x-2">
                 <Switch
                   id="use-hmac"
@@ -264,21 +276,19 @@ export default function Hashing() {
                 <Label htmlFor="use-hmac">{t('hashing.hmacSection')}</Label>
               </div>
 
-              {/* HMAC Key */}
               {useHMAC && (
                 <div className="space-y-2">
                   <Label htmlFor="hmac-key">{t('hashing.hmacKey')}</Label>
                   <Input
                     id="hmac-key"
                     type="password"
-                    placeholder="Enter HMAC key..."
+                    placeholder={tr('hashing.hmacKeyPlaceholder', 'Enter HMAC key...')}
                     value={hmacKey}
                     onChange={(e) => setHmacKey(e.target.value)}
                   />
                 </div>
               )}
 
-              {/* Text Input */}
               <div className="space-y-2">
                 <Label htmlFor="hash-input">{t('hashing.inputLabel')}</Label>
                 <Textarea
@@ -290,7 +300,6 @@ export default function Hashing() {
                 />
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-2">
                 <Button
                   onClick={handleTextHash}
@@ -309,7 +318,6 @@ export default function Hashing() {
                 </Button>
               </div>
 
-              {/* Hash Result */}
               {hashResult && (
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -318,7 +326,7 @@ export default function Hashing() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(hashResult)}
+                        onClick={() => handleCopy(hashResult)}
                       >
                         <Copy className="h-4 w-4 mr-1" />
                         {t('common.copy')}
@@ -332,7 +340,6 @@ export default function Hashing() {
                     />
                   </div>
 
-                  {/* Verification */}
                   <div className="space-y-2 border-t pt-4">
                     <Label htmlFor="compare-hash">{t('hashing.verifyHash')}</Label>
                     <div className="flex gap-2">
@@ -350,7 +357,7 @@ export default function Hashing() {
                         {t('common.verify')}
                       </Button>
                     </div>
-                    
+
                     {verificationResult && (
                       <Alert variant={verificationResult === 'match' ? 'default' : 'destructive'}>
                         <AlertDescription className="flex items-center gap-2">
@@ -383,11 +390,10 @@ export default function Hashing() {
                 {t('hashing.fileHashing')}
               </CardTitle>
               <CardDescription>
-                Calculate hash for any file
+                {tr('hashing.fileHashingDesc', 'Calculate hash for any file')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="file-hash-algorithm">{t('hashing.algorithmLabel')}</Label>
                 <Select value={hashAlgorithm} onValueChange={setHashAlgorithm}>
@@ -404,7 +410,6 @@ export default function Hashing() {
                 </Select>
               </div>
 
-              {/* File Upload */}
               <div className="space-y-2">
                 <Label>{t('hashing.fileUpload')}</Label>
                 <div
@@ -445,7 +450,6 @@ export default function Hashing() {
                 </div>
               </div>
 
-              {/* Action Button */}
               <Button
                 onClick={handleFileHash}
                 disabled={isHashing || !file}
@@ -455,7 +459,6 @@ export default function Hashing() {
                 {isHashing ? t('common.processing') : t('hashing.calculateFileHash')}
               </Button>
 
-              {/* File Hash Result */}
               {fileHash && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -463,7 +466,7 @@ export default function Hashing() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => copyToClipboard(fileHash)}
+                      onClick={() => handleCopy(fileHash)}
                     >
                       <Copy className="h-4 w-4 mr-1" />
                       {t('common.copy')}

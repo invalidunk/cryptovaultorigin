@@ -218,7 +218,7 @@
     "subtitle": "Detailed instructions for all features",
     "gettingStarted": "Getting Started",
     "encryptionGuide": "Encryption Guide",
-    "algorithms": "Algorithms",
+    "algorithmsLabel": "Algorithms",
     "security": "Security",
     "faq": "FAQ",
     "introduction": "Introduction",
@@ -283,7 +283,7 @@
       "notRecommended": "Not Recommended",
       "deprecated": "Deprecated"
     },
-    "algorithmsInfo": {
+    "algorithmInfo": {
       "aes256gcm": "Advanced Encryption Standard with Galois/Counter Mode",
       "aes256cbc": "AES with Cipher Block Chaining",
       "aes256ctr": "AES with Counter mode",

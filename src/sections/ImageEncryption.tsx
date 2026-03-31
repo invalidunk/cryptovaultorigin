@@ -92,6 +92,7 @@ export default function ImageEncryption() {
 
     setDecryptFile(file);
     setDecryptedImage('');
+
     const nameWithoutExt = file.name.replace('.encrypted', '');
     setOriginalFileName(nameWithoutExt);
   };
@@ -235,7 +236,9 @@ export default function ImageEncryption() {
                 <ImageIcon className="h-5 w-5" />
                 {t('imageEncryption.encryptSection')}
               </CardTitle>
-              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
+              <CardDescription>
+                {t('imageEncryption.subtitle')}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div
@@ -312,7 +315,15 @@ export default function ImageEncryption() {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">{t('textEncryption.passwordStrength')}</span>
-                      <span className={passwordStrength.level === 'weak' ? 'text-red-500' : passwordStrength.level === 'medium' ? 'text-yellow-500' : 'text-green-500'}>
+                      <span
+                        className={
+                          passwordStrength.level === 'weak'
+                            ? 'text-red-500'
+                            : passwordStrength.level === 'medium'
+                            ? 'text-yellow-500'
+                            : 'text-green-500'
+                        }
+                      >
                         {t(`common.${passwordStrength.message}`)}
                       </span>
                     </div>
@@ -373,7 +384,9 @@ export default function ImageEncryption() {
                 <FileImage className="h-5 w-5" />
                 {t('imageEncryption.decryptSection')}
               </CardTitle>
-              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
+              <CardDescription>
+                {t('imageEncryption.subtitle')}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div

@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { 
-  Book, 
-  Shield, 
-  Lock, 
-  Key, 
+import {
+  Book,
+  Shield,
+  Lock,
+  Key,
   AlertTriangle,
   CheckCircle,
   ChevronRight
@@ -11,64 +11,171 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAppT } from '@/lib/i18n';
 
 const algorithmList = [
   {
-    category: 'Symmetric Encryption',
+    categoryKey: 'documentation.symmetricEncryption',
+    categoryFallback: 'Symmetric Encryption',
     algorithms: [
-      { name: 'AES-256-GCM', status: 'recommended', description: 'Advanced Encryption Standard with Galois/Counter Mode' },
-      { name: 'AES-256-CBC', status: 'secure', description: 'AES with Cipher Block Chaining' },
-      { name: 'AES-256-CTR', status: 'secure', description: 'AES with Counter mode' },
-      { name: 'AES-256-ECB', status: 'notRecommended', description: 'AES with Electronic Codebook (not recommended for multiple blocks)' },
-      { name: '3DES', status: 'legacy', description: 'Triple DES - legacy algorithm' },
-      { name: 'DES', status: 'deprecated', description: 'Data Encryption Standard - obsolete' },
-      { name: 'Blowfish', status: 'legacy', description: 'Symmetric block cipher' },
-      { name: 'RC4', status: 'deprecated', description: 'Stream cipher - has vulnerabilities' },
-      { name: 'Rabbit', status: 'secure', description: 'High-speed stream cipher' },
-    ],
+      {
+        name: 'AES-256-GCM',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.aes256gcm',
+        descriptionFallback: 'Advanced Encryption Standard with Galois/Counter Mode'
+      },
+      {
+        name: 'AES-256-CBC',
+        status: 'secure',
+        descriptionKey: 'documentation.algorithms.aes256cbc',
+        descriptionFallback: 'AES with Cipher Block Chaining'
+      },
+      {
+        name: 'AES-256-CTR',
+        status: 'secure',
+        descriptionKey: 'documentation.algorithms.aes256ctr',
+        descriptionFallback: 'AES with Counter mode'
+      },
+      {
+        name: 'AES-256-ECB',
+        status: 'notRecommended',
+        descriptionKey: 'documentation.algorithms.aes256ecb',
+        descriptionFallback: 'AES with Electronic Codebook (not recommended for multiple blocks)'
+      },
+      {
+        name: '3DES',
+        status: 'legacy',
+        descriptionKey: 'documentation.algorithms.3des',
+        descriptionFallback: 'Triple DES - legacy algorithm'
+      },
+      {
+        name: 'DES',
+        status: 'deprecated',
+        descriptionKey: 'documentation.algorithms.des',
+        descriptionFallback: 'Data Encryption Standard - obsolete'
+      },
+      {
+        name: 'Blowfish',
+        status: 'legacy',
+        descriptionKey: 'documentation.algorithms.blowfish',
+        descriptionFallback: 'Symmetric block cipher'
+      },
+      {
+        name: 'RC4',
+        status: 'deprecated',
+        descriptionKey: 'documentation.algorithms.rc4',
+        descriptionFallback: 'Stream cipher - has vulnerabilities'
+      },
+      {
+        name: 'Rabbit',
+        status: 'secure',
+        descriptionKey: 'documentation.algorithms.rabbit',
+        descriptionFallback: 'High-speed stream cipher'
+      }
+    ]
   },
   {
-    category: 'Asymmetric Encryption',
+    categoryKey: 'documentation.asymmetricEncryption',
+    categoryFallback: 'Asymmetric Encryption',
     algorithms: [
-      { name: 'RSA-2048', status: 'recommended', description: 'RSA with 2048-bit key' },
-      { name: 'RSA-3072', status: 'recommended', description: 'RSA with 3072-bit key' },
-      { name: 'RSA-4096', status: 'recommended', description: 'RSA with 4096-bit key' },
-      { name: 'ECC-secp256r1', status: 'recommended', description: 'Elliptic Curve Cryptography' },
-      { name: 'ECC-secp384r1', status: 'recommended', description: 'ECC with P-384 curve' },
-    ],
+      {
+        name: 'RSA-2048',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.rsa2048',
+        descriptionFallback: 'RSA with 2048-bit key'
+      },
+      {
+        name: 'RSA-3072',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.rsa3072',
+        descriptionFallback: 'RSA with 3072-bit key'
+      },
+      {
+        name: 'RSA-4096',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.rsa4096',
+        descriptionFallback: 'RSA with 4096-bit key'
+      },
+      {
+        name: 'ECC-secp256r1',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.ecc256',
+        descriptionFallback: 'Elliptic Curve Cryptography'
+      },
+      {
+        name: 'ECC-secp384r1',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.ecc384',
+        descriptionFallback: 'ECC with P-384 curve'
+      }
+    ]
   },
   {
-    category: 'Hash Algorithms',
+    categoryKey: 'documentation.hashAlgorithms',
+    categoryFallback: 'Hash Algorithms',
     algorithms: [
-      { name: 'SHA-256', status: 'recommended', description: 'Secure Hash Algorithm 256-bit' },
-      { name: 'SHA-512', status: 'recommended', description: 'Secure Hash Algorithm 512-bit' },
-      { name: 'SHA-3', status: 'recommended', description: 'Latest SHA family' },
-      { name: 'RIPEMD-160', status: 'secure', description: 'RIPE Message Digest' },
-      { name: 'SHA-1', status: 'deprecated', description: 'Being phased out' },
-      { name: 'MD5', status: 'deprecated', description: 'Use only for checksums' },
-    ],
-  },
+      {
+        name: 'SHA-256',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.sha256',
+        descriptionFallback: 'Secure Hash Algorithm 256-bit'
+      },
+      {
+        name: 'SHA-512',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.sha512',
+        descriptionFallback: 'Secure Hash Algorithm 512-bit'
+      },
+      {
+        name: 'SHA-3',
+        status: 'recommended',
+        descriptionKey: 'documentation.algorithms.sha3',
+        descriptionFallback: 'Latest SHA family'
+      },
+      {
+        name: 'RIPEMD-160',
+        status: 'secure',
+        descriptionKey: 'documentation.algorithms.ripemd160',
+        descriptionFallback: 'RIPE Message Digest'
+      },
+      {
+        name: 'SHA-1',
+        status: 'deprecated',
+        descriptionKey: 'documentation.algorithms.sha1',
+        descriptionFallback: 'Being phased out'
+      },
+      {
+        name: 'MD5',
+        status: 'deprecated',
+        descriptionKey: 'documentation.algorithms.md5',
+        descriptionFallback: 'Use only for checksums'
+      }
+    ]
+  }
 ];
 
-const getStatusBadge = (status: string) => {
+function StatusBadge({ status }: { status: string }) {
+  const { tr } = useAppT();
+
   switch (status) {
     case 'recommended':
-      return <Badge className="bg-green-500">Recommended</Badge>;
+      return <Badge className="bg-green-500">{tr('documentation.status.recommended', 'Recommended')}</Badge>;
     case 'secure':
-      return <Badge className="bg-blue-500">Secure</Badge>;
+      return <Badge className="bg-blue-500">{tr('documentation.status.secure', 'Secure')}</Badge>;
     case 'legacy':
-      return <Badge variant="secondary">Legacy</Badge>;
+      return <Badge variant="secondary">{tr('documentation.status.legacy', 'Legacy')}</Badge>;
     case 'notRecommended':
-      return <Badge variant="outline">Not Recommended</Badge>;
+      return <Badge variant="outline">{tr('documentation.status.notRecommended', 'Not Recommended')}</Badge>;
     case 'deprecated':
-      return <Badge variant="destructive">Deprecated</Badge>;
+      return <Badge variant="destructive">{tr('documentation.status.deprecated', 'Deprecated')}</Badge>;
     default:
       return <Badge variant="outline">{status}</Badge>;
   }
-};
+}
 
 export default function Documentation() {
   const { t } = useTranslation();
+  const { tr } = useAppT();
 
   return (
     <div className="space-y-6">
@@ -79,7 +186,6 @@ export default function Documentation() {
 
       <ScrollArea className="h-[calc(100vh-200px)]">
         <div className="space-y-6 pr-4">
-          {/* Introduction */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -91,7 +197,7 @@ export default function Documentation() {
               <p className="text-muted-foreground">
                 {t('documentation.introText')}
               </p>
-              
+
               <div className="space-y-2">
                 <h3 className="font-semibold">{t('documentation.features')}</h3>
                 <ul className="space-y-2">
@@ -106,7 +212,6 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* How to Encrypt */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -128,7 +233,6 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* How to Decrypt */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -150,7 +254,6 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* Algorithm Reference */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -160,8 +263,10 @@ export default function Documentation() {
             </CardHeader>
             <CardContent className="space-y-6">
               {algorithmList.map((category) => (
-                <div key={category.category} className="space-y-3">
-                  <h3 className="font-semibold text-lg">{category.category}</h3>
+                <div key={category.categoryKey} className="space-y-3">
+                  <h3 className="font-semibold text-lg">
+                    {tr(category.categoryKey, category.categoryFallback)}
+                  </h3>
                   <div className="grid gap-2">
                     {category.algorithms.map((algo) => (
                       <div
@@ -170,9 +275,11 @@ export default function Documentation() {
                       >
                         <div className="space-y-1">
                           <div className="font-medium">{algo.name}</div>
-                          <div className="text-sm text-muted-foreground">{algo.description}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {tr(algo.descriptionKey, algo.descriptionFallback)}
+                          </div>
                         </div>
-                        {getStatusBadge(algo.status)}
+                        <StatusBadge status={algo.status} />
                       </div>
                     ))}
                   </div>
@@ -181,7 +288,6 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* Security Notice */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -193,7 +299,7 @@ export default function Documentation() {
               <p className="text-muted-foreground">
                 {t('documentation.securityText')}
               </p>
-              
+
               <ul className="space-y-2">
                 {(t('documentation.securityTips', { returnObjects: true }) as string[]).map((tip, index) => (
                   <li key={index} className="flex items-start gap-2">
@@ -205,7 +311,6 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* Password Requirements */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -225,12 +330,14 @@ export default function Documentation() {
             </CardContent>
           </Card>
 
-          {/* Algorithm Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Algorithm Details</CardTitle>
+              <CardTitle>{tr('documentation.algorithmDetails', 'Algorithm Details')}</CardTitle>
               <CardDescription>
-                Detailed information about supported algorithms
+                {tr(
+                  'documentation.algorithmDetailsDesc',
+                  'Detailed information about supported algorithms'
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -240,28 +347,28 @@ export default function Documentation() {
                   {t('documentation.aesDescription')}
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <h4 className="font-semibold">DES (Data Encryption Standard)</h4>
                 <p className="text-sm text-muted-foreground">
                   {t('documentation.desDescription')}
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <h4 className="font-semibold">RSA (Rivest–Shamir–Adleman)</h4>
                 <p className="text-sm text-muted-foreground">
                   {t('documentation.rsaDescription')}
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <h4 className="font-semibold">ECC (Elliptic Curve Cryptography)</h4>
                 <p className="text-sm text-muted-foreground">
                   {t('documentation.eccDescription')}
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <h4 className="font-semibold">SHA (Secure Hash Algorithm)</h4>
                 <p className="text-sm text-muted-foreground">

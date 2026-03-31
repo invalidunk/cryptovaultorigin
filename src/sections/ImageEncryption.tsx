@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Image as ImageIcon, 
-  Upload, 
-  Lock, 
-  Unlock, 
-  Download, 
-  Trash2, 
+import {
+  Image as ImageIcon,
+  Upload,
+  Lock,
+  Unlock,
+  Download,
+  Trash2,
   FileImage
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -26,15 +26,16 @@ import {
   getImageAlgorithms,
 } from '@/crypto';
 import { checkPasswordStrength } from '@/utils/passwordStrength';
+import { useAppT } from '@/lib/i18n';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
 
 export default function ImageEncryption() {
   const { t } = useTranslation();
+  const { tr } = useAppT();
   const [activeTab, setActiveTab] = useState('encrypt');
-  
-  // Encrypt state
+
   const [encryptFile, setEncryptFile] = useState<File | null>(null);
   const [encryptPreview, setEncryptPreview] = useState<string>('');
   const [encryptKey, setEncryptKey] = useState('');
@@ -42,8 +43,7 @@ export default function ImageEncryption() {
   const [encryptedData, setEncryptedData] = useState<string>('');
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [encryptProgress, setEncryptProgress] = useState(0);
-  
-  // Decrypt state
+
   const [decryptFile, setDecryptFile] = useState<File | null>(null);
   const [decryptKey, setDecryptKey] = useState('');
   const [decryptAlgorithm, setDecryptAlgorithm] = useState('AES-256-GCM');
@@ -51,7 +51,7 @@ export default function ImageEncryption() {
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [originalFileName, setOriginalFileName] = useState('');
   const [originalMimeType, setOriginalMimeType] = useState('image/png');
-  
+
   const encryptInputRef = useRef<HTMLInputElement>(null);
   const decryptInputRef = useRef<HTMLInputElement>(null);
 
@@ -60,11 +60,11 @@ export default function ImageEncryption() {
 
   const validateFile = (file: File): boolean => {
     if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error(t('imageEncryption.invalidImage'));
+      toast.error(tr('imageEncryption.invalidImage', 'Please select a valid image file'));
       return false;
     }
     if (file.size > MAX_FILE_SIZE) {
-      toast.error(t('imageEncryption.fileTooLarge'));
+      toast.error(tr('imageEncryption.fileTooLarge', 'File too large. Maximum size is 10MB'));
       return false;
     }
     return true;
@@ -78,11 +78,12 @@ export default function ImageEncryption() {
 
     setEncryptFile(file);
     const reader = new FileReader();
-    reader.onload = (e) => {
-      setEncryptPreview(e.target?.result as string);
+    reader.onload = (event) => {
+      setEncryptPreview(event.target?.result as string);
     };
     reader.readAsDataURL(file);
     setEncryptedData('');
+    toast.success(tr('success.imageUploaded', 'Image uploaded successfully'));
   };
 
   const handleDecryptFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,25 +92,23 @@ export default function ImageEncryption() {
 
     setDecryptFile(file);
     setDecryptedImage('');
-    
-    // Try to read metadata from filename
     const nameWithoutExt = file.name.replace('.encrypted', '');
     setOriginalFileName(nameWithoutExt);
   };
 
   const handleEncrypt = async () => {
     if (!encryptFile) {
-      toast.error(t('errors.missingFile'));
+      toast.error(tr('errors.missingFile', 'Please select a file'));
       return;
     }
     if (!encryptKey.trim()) {
-      toast.error(t('errors.missingKey'));
+      toast.error(tr('errors.missingKey', 'Please enter a key'));
       return;
     }
 
     setIsEncrypting(true);
     setEncryptProgress(30);
-    
+
     try {
       const result = await encryptImage(encryptFile, encryptKey, encryptAlgorithm);
       setEncryptProgress(70);
@@ -117,9 +116,9 @@ export default function ImageEncryption() {
       setOriginalFileName(result.originalName);
       setOriginalMimeType(result.mimeType);
       setEncryptProgress(100);
-      toast.success(t('imageEncryption.encryptionSuccess'));
+      toast.success(tr('imageEncryption.encryptionSuccess', 'Image encrypted successfully'));
     } catch (error) {
-      toast.error(t('errors.encryptionFailed'));
+      toast.error(tr('errors.encryptionFailed', 'Encryption failed'));
       console.error(error);
     } finally {
       setIsEncrypting(false);
@@ -128,23 +127,23 @@ export default function ImageEncryption() {
 
   const handleDecrypt = async () => {
     if (!decryptFile) {
-      toast.error(t('errors.missingFile'));
+      toast.error(tr('errors.missingFile', 'Please select a file'));
       return;
     }
     if (!decryptKey.trim()) {
-      toast.error(t('errors.missingKey'));
+      toast.error(tr('errors.missingKey', 'Please enter a key'));
       return;
     }
 
     setIsDecrypting(true);
-    
+
     try {
       const encryptedText = await decryptFile.text();
       const result = decryptImage(encryptedText, decryptKey, decryptAlgorithm, originalMimeType);
       setDecryptedImage(result);
-      toast.success(t('imageEncryption.decryptionSuccess'));
+      toast.success(tr('imageEncryption.decryptionSuccess', 'Image decrypted successfully'));
     } catch (error) {
-      toast.error(t('errors.decryptionFailed'));
+      toast.error(tr('errors.decryptionFailed', 'Decryption failed. Check your key and algorithm.'));
       console.error(error);
     } finally {
       setIsDecrypting(false);
@@ -154,12 +153,14 @@ export default function ImageEncryption() {
   const handleDownloadEncrypted = () => {
     if (encryptedData && encryptFile) {
       downloadEncryptedImage(encryptedData, encryptFile.name);
+      toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
     }
   };
 
   const handleDownloadDecrypted = () => {
     if (decryptedImage && originalFileName) {
       downloadDecryptedImage(decryptedImage, `decrypted_${originalFileName}`);
+      toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
     }
   };
 
@@ -192,11 +193,12 @@ export default function ImageEncryption() {
       if (!validateFile(file)) return;
       setEncryptFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setEncryptPreview(e.target?.result as string);
+      reader.onload = (event) => {
+        setEncryptPreview(event.target?.result as string);
       };
       reader.readAsDataURL(file);
       setEncryptedData('');
+      toast.success(tr('success.imageUploaded', 'Image uploaded successfully'));
     } else {
       setDecryptFile(file);
       setDecryptedImage('');
@@ -233,12 +235,9 @@ export default function ImageEncryption() {
                 <ImageIcon className="h-5 w-5" />
                 {t('imageEncryption.encryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('imageEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* File Upload */}
               <div
                 className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
                 onDrop={(e) => handleDrop(e, 'encrypt')}
@@ -283,7 +282,6 @@ export default function ImageEncryption() {
                 )}
               </div>
 
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="image-algorithm">{t('imageEncryption.algorithmLabel')}</Label>
                 <Select value={encryptAlgorithm} onValueChange={setEncryptAlgorithm}>
@@ -300,7 +298,6 @@ export default function ImageEncryption() {
                 </Select>
               </div>
 
-              {/* Key Input */}
               <div className="space-y-2">
                 <Label htmlFor="image-encrypt-key">{t('imageEncryption.keyLabel')}</Label>
                 <Input
@@ -310,8 +307,7 @@ export default function ImageEncryption() {
                   value={encryptKey}
                   onChange={(e) => setEncryptKey(e.target.value)}
                 />
-                
-                {/* Password Strength */}
+
                 {encryptKey && (
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
@@ -320,15 +316,11 @@ export default function ImageEncryption() {
                         {t(`common.${passwordStrength.message}`)}
                       </span>
                     </div>
-                    <Progress 
-                      value={strengthPercentage} 
-                      className="h-2"
-                    />
+                    <Progress value={strengthPercentage} className="h-2" />
                   </div>
                 )}
               </div>
 
-              {/* Progress */}
               {isEncrypting && (
                 <div className="space-y-2">
                   <Progress value={encryptProgress} className="h-2" />
@@ -336,7 +328,6 @@ export default function ImageEncryption() {
                 </div>
               )}
 
-              {/* Action Buttons */}
               <div className="flex gap-2">
                 <Button
                   onClick={handleEncrypt}
@@ -355,7 +346,6 @@ export default function ImageEncryption() {
                 </Button>
               </div>
 
-              {/* Encrypted Result */}
               {encryptedData && (
                 <Alert className="mt-4">
                   <span className="text-green-500">✓</span>
@@ -383,12 +373,9 @@ export default function ImageEncryption() {
                 <FileImage className="h-5 w-5" />
                 {t('imageEncryption.decryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('imageEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* File Upload */}
               <div
                 className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
                 onDrop={(e) => handleDrop(e, 'decrypt')}
@@ -426,12 +413,13 @@ export default function ImageEncryption() {
                   <div className="space-y-2">
                     <Upload className="h-12 w-12 mx-auto text-muted-foreground" />
                     <p className="text-lg font-medium">{t('imageEncryption.dragDropImage')}</p>
-                    <p className="text-sm text-muted-foreground">Select encrypted file</p>
+                    <p className="text-sm text-muted-foreground">
+                      {tr('imageEncryption.selectEncryptedFile', 'Select encrypted file')}
+                    </p>
                   </div>
                 )}
               </div>
 
-              {/* Algorithm Selection */}
               <div className="space-y-2">
                 <Label htmlFor="image-decrypt-algorithm">{t('imageEncryption.algorithmLabel')}</Label>
                 <Select value={decryptAlgorithm} onValueChange={setDecryptAlgorithm}>
@@ -448,7 +436,6 @@ export default function ImageEncryption() {
                 </Select>
               </div>
 
-              {/* Key Input */}
               <div className="space-y-2">
                 <Label htmlFor="image-decrypt-key">{t('imageEncryption.keyLabel')}</Label>
                 <Input
@@ -460,7 +447,6 @@ export default function ImageEncryption() {
                 />
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-2">
                 <Button
                   onClick={handleDecrypt}
@@ -480,7 +466,6 @@ export default function ImageEncryption() {
                 </Button>
               </div>
 
-              {/* Decrypted Result */}
               {decryptedImage && (
                 <div className="space-y-4 mt-4">
                   <div className="border rounded-lg p-4">

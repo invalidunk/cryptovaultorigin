@@ -32,7 +32,13 @@ const base64ToBytes = (base64: string): Uint8Array => {
   return bytes;
 };
 
-// Convert image to base64
+const toArrayBuffer = (bytes: Uint8Array): ArrayBuffer => {
+  return bytes.buffer.slice(
+    bytes.byteOffset,
+    bytes.byteOffset + bytes.byteLength
+  ) as ArrayBuffer;
+};
+
 export const imageToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -45,7 +51,6 @@ export const imageToBase64 = (file: File): Promise<string> => {
   });
 };
 
-// Convert base64 to image file
 export const base64ToImage = (
   base64: string,
   filename: string,
@@ -62,9 +67,11 @@ export const base64ToImage = (
 };
 
 const deriveAesKey = async (password: string, salt: Uint8Array): Promise<CryptoKey> => {
+  const passwordBytes = encoder.encode(password);
+
   const baseKey = await crypto.subtle.importKey(
     'raw',
-    encoder.encode(password),
+    toArrayBuffer(passwordBytes),
     'PBKDF2',
     false,
     ['deriveKey']
@@ -73,7 +80,7 @@ const deriveAesKey = async (password: string, salt: Uint8Array): Promise<CryptoK
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt,
+      salt: toArrayBuffer(salt),
       iterations: 250000,
       hash: 'SHA-256',
     },
@@ -93,6 +100,7 @@ const encryptImageGCM = async (
 ): Promise<{ encryptedData: string; originalName: string; mimeType: string }> => {
   const base64Data = await imageToBase64(file);
   const plaintext = encoder.encode(base64Data);
+  const plaintextBuffer = toArrayBuffer(plaintext);
 
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -101,11 +109,11 @@ const encryptImageGCM = async (
   const encryptedBuffer = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
-      iv,
+      iv: toArrayBuffer(iv),
       tagLength: 128,
     },
     key,
-    plaintext
+    plaintextBuffer
   );
 
   const payload: EncryptedImagePayload = {
@@ -148,11 +156,11 @@ const decryptImageGCM = async (
   const decryptedBuffer = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
-      iv,
+      iv: toArrayBuffer(iv),
       tagLength: 128,
     },
     key,
-    ciphertext
+    toArrayBuffer(ciphertext)
   );
 
   const base64Data = decoder.decode(decryptedBuffer);
@@ -168,7 +176,6 @@ const decryptImageGCM = async (
   };
 };
 
-// Encrypt image data
 export const encryptImage = async (
   file: File,
   key: string,
@@ -242,7 +249,6 @@ export const encryptImage = async (
   }
 };
 
-// Decrypt image data
 export const decryptImage = async (
   encryptedData: string,
   key: string,
@@ -299,7 +305,6 @@ export const decryptImage = async (
   }
 };
 
-// Download encrypted image as file
 export const downloadEncryptedImage = (
   encryptedData: string,
   originalName: string
@@ -315,7 +320,6 @@ export const downloadEncryptedImage = (
   URL.revokeObjectURL(url);
 };
 
-// Download decrypted image
 export const downloadDecryptedImage = (
   dataUrl: string,
   filename: string
@@ -328,7 +332,6 @@ export const downloadDecryptedImage = (
   document.body.removeChild(a);
 };
 
-// Get supported image algorithms
 export const getImageAlgorithms = (): string[] => {
   return ['AES-256-GCM', 'AES', 'DES', '3DES', 'RC4', 'Rabbit'];
 };

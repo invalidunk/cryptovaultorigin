@@ -37,17 +37,17 @@ export default function ImageEncryption() {
   const [activeTab, setActiveTab] = useState('encrypt');
 
   const [encryptFile, setEncryptFile] = useState<File | null>(null);
-  const [encryptPreview, setEncryptPreview] = useState<string>('');
+  const [encryptPreview, setEncryptPreview] = useState('');
   const [encryptKey, setEncryptKey] = useState('');
   const [encryptAlgorithm, setEncryptAlgorithm] = useState('AES-256-GCM');
-  const [encryptedData, setEncryptedData] = useState<string>('');
+  const [encryptedData, setEncryptedData] = useState('');
   const [isEncrypting, setIsEncrypting] = useState(false);
   const [encryptProgress, setEncryptProgress] = useState(0);
 
   const [decryptFile, setDecryptFile] = useState<File | null>(null);
   const [decryptKey, setDecryptKey] = useState('');
   const [decryptAlgorithm, setDecryptAlgorithm] = useState('AES-256-GCM');
-  const [decryptedImage, setDecryptedImage] = useState<string>('');
+  const [decryptedImage, setDecryptedImage] = useState('');
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [originalFileName, setOriginalFileName] = useState('');
   const [originalMimeType, setOriginalMimeType] = useState('image/png');
@@ -70,19 +70,23 @@ export default function ImageEncryption() {
     return true;
   };
 
+  const loadEncryptPreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setEncryptPreview((event.target?.result as string) || '');
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleEncryptFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (!validateFile(file)) return;
 
     setEncryptFile(file);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setEncryptPreview(event.target?.result as string);
-    };
-    reader.readAsDataURL(file);
     setEncryptedData('');
+    setEncryptProgress(0);
+    loadEncryptPreview(file);
     toast.success(tr('success.imageUploaded', 'Image uploaded successfully'));
   };
 
@@ -92,9 +96,8 @@ export default function ImageEncryption() {
 
     setDecryptFile(file);
     setDecryptedImage('');
-
-    const nameWithoutExt = file.name.replace('.encrypted', '');
-    setOriginalFileName(nameWithoutExt);
+    setOriginalFileName(file.name.replace(/\.encrypted(\.txt)?$/i, ''));
+    setOriginalMimeType('image/png');
   };
 
   const handleEncrypt = async () => {
@@ -108,14 +111,16 @@ export default function ImageEncryption() {
     }
 
     setIsEncrypting(true);
-    setEncryptProgress(30);
+    setEncryptProgress(25);
 
     try {
       const result = await encryptImage(encryptFile, encryptKey, encryptAlgorithm);
       setEncryptProgress(70);
+
       setEncryptedData(result.encryptedData);
       setOriginalFileName(result.originalName);
       setOriginalMimeType(result.mimeType);
+
       setEncryptProgress(100);
       toast.success(tr('imageEncryption.encryptionSuccess', 'Image encrypted successfully'));
     } catch (error) {
@@ -140,7 +145,13 @@ export default function ImageEncryption() {
 
     try {
       const encryptedText = await decryptFile.text();
-      const result = decryptImage(encryptedText, decryptKey, decryptAlgorithm, originalMimeType);
+      const result = await decryptImage(
+        encryptedText,
+        decryptKey,
+        decryptAlgorithm,
+        originalMimeType
+      );
+
       setDecryptedImage(result);
       toast.success(tr('imageEncryption.decryptionSuccess', 'Image decrypted successfully'));
     } catch (error) {
@@ -152,17 +163,17 @@ export default function ImageEncryption() {
   };
 
   const handleDownloadEncrypted = () => {
-    if (encryptedData && encryptFile) {
-      downloadEncryptedImage(encryptedData, encryptFile.name);
-      toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
-    }
+    if (!encryptedData || !encryptFile) return;
+    downloadEncryptedImage(encryptedData, encryptFile.name);
+    toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
   };
 
   const handleDownloadDecrypted = () => {
-    if (decryptedImage && originalFileName) {
-      downloadDecryptedImage(decryptedImage, `decrypted_${originalFileName}`);
-      toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
-    }
+    if (!decryptedImage) return;
+
+    const fallbackName = originalFileName || 'decrypted_image';
+    downloadDecryptedImage(decryptedImage, `decrypted_${fallbackName}`);
+    toast.success(tr('success.fileDownloaded', 'File downloaded successfully'));
   };
 
   const clearEncrypt = () => {
@@ -171,6 +182,9 @@ export default function ImageEncryption() {
     setEncryptKey('');
     setEncryptedData('');
     setEncryptProgress(0);
+    setOriginalFileName('');
+    setOriginalMimeType('image/png');
+
     if (encryptInputRef.current) {
       encryptInputRef.current.value = '';
     }
@@ -180,6 +194,9 @@ export default function ImageEncryption() {
     setDecryptFile(null);
     setDecryptKey('');
     setDecryptedImage('');
+    setOriginalFileName('');
+    setOriginalMimeType('image/png');
+
     if (decryptInputRef.current) {
       decryptInputRef.current.value = '';
     }
@@ -187,23 +204,23 @@ export default function ImageEncryption() {
 
   const handleDrop = (e: React.DragEvent, type: 'encrypt' | 'decrypt') => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
+    const file = e.dataTransfer.files?.[0];
     if (!file) return;
 
     if (type === 'encrypt') {
       if (!validateFile(file)) return;
       setEncryptFile(file);
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setEncryptPreview(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
       setEncryptedData('');
+      setEncryptProgress(0);
+      loadEncryptPreview(file);
       toast.success(tr('success.imageUploaded', 'Image uploaded successfully'));
-    } else {
-      setDecryptFile(file);
-      setDecryptedImage('');
+      return;
     }
+
+    setDecryptFile(file);
+    setDecryptedImage('');
+    setOriginalFileName(file.name.replace(/\.encrypted(\.txt)?$/i, ''));
+    setOriginalMimeType('image/png');
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -236,10 +253,9 @@ export default function ImageEncryption() {
                 <ImageIcon className="h-5 w-5" />
                 {t('imageEncryption.encryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('imageEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-4">
               <div
                 className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
@@ -254,6 +270,7 @@ export default function ImageEncryption() {
                   onChange={handleEncryptFileSelect}
                   className="hidden"
                 />
+
                 {encryptPreview ? (
                   <div className="space-y-4">
                     <img
@@ -384,10 +401,9 @@ export default function ImageEncryption() {
                 <FileImage className="h-5 w-5" />
                 {t('imageEncryption.decryptSection')}
               </CardTitle>
-              <CardDescription>
-                {t('imageEncryption.subtitle')}
-              </CardDescription>
+              <CardDescription>{t('imageEncryption.subtitle')}</CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-4">
               <div
                 className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-muted-foreground/50 transition-colors cursor-pointer"
@@ -402,6 +418,7 @@ export default function ImageEncryption() {
                   onChange={handleDecryptFileSelect}
                   className="hidden"
                 />
+
                 {decryptFile ? (
                   <div className="space-y-4">
                     <div className="flex items-center justify-center">

@@ -34,6 +34,18 @@ const toArrayBuffer = (bytes: Uint8Array): ArrayBuffer => {
   return Uint8Array.from(bytes).buffer as ArrayBuffer;
 };
 
+const encodePayload = (payload: AesGcmPayload): string => {
+  return btoa(JSON.stringify(payload));
+};
+
+const decodePayload = (encoded: string): AesGcmPayload => {
+  try {
+    return JSON.parse(atob(encoded)) as AesGcmPayload;
+  } catch {
+    return JSON.parse(encoded) as AesGcmPayload;
+  }
+};
+
 const deriveAesKey = async (password: string, salt: Uint8Array): Promise<CryptoKey> => {
   const passwordBytes = encoder.encode(password);
 
@@ -86,11 +98,11 @@ const aesGcmEncrypt = async (text: string, password: string): Promise<string> =>
     ciphertext: bytesToBase64(new Uint8Array(encryptedBuffer)),
   };
 
-  return JSON.stringify(payload);
+  return encodePayload(payload);
 };
 
 const aesGcmDecrypt = async (encryptedText: string, password: string): Promise<string> => {
-  const payload = JSON.parse(encryptedText) as AesGcmPayload;
+  const payload = decodePayload(encryptedText);
 
   if (payload.alg !== 'AES-256-GCM') {
     throw new Error('Unsupported AES-GCM payload');
@@ -115,7 +127,6 @@ const aesGcmDecrypt = async (encryptedText: string, password: string): Promise<s
   return decoder.decode(decryptedBuffer);
 };
 
-// AES Encryption/Decryption with different modes
 export const aesEncrypt = async (
   text: string,
   key: string,
@@ -185,7 +196,7 @@ export const aesDecrypt = async (
   }
 };
 
-// DES Encryption/Decryption
+// DES
 export const desEncrypt = (text: string, key: string): string => {
   try {
     const paddedKey = key.padEnd(8, '0').slice(0, 8);
@@ -222,29 +233,6 @@ export const tripleDesDecrypt = (encryptedText: string, key: string): string => 
     return decrypted.toString(CryptoJS.enc.Utf8);
   } catch (error) {
     throw new Error(`3DES Decryption failed: ${error}`);
-  }
-};
-
-// Blowfish giả nhãn nếu vẫn giữ fallback
-export const blowfishEncrypt = (text: string, key: string): string => {
-  try {
-    const paddedKey = key.padEnd(32, '0').slice(0, 56);
-    return CryptoJS.AES.encrypt(text, paddedKey, {
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    }).toString();
-  } catch (error) {
-    throw new Error(`Blowfish Encryption failed: ${error}`);
-  }
-};
-
-export const blowfishDecrypt = (encryptedText: string, key: string): string => {
-  try {
-    const paddedKey = key.padEnd(32, '0').slice(0, 56);
-    const decrypted = CryptoJS.AES.decrypt(encryptedText, paddedKey);
-    return decrypted.toString(CryptoJS.enc.Utf8);
-  } catch (error) {
-    throw new Error(`Blowfish Decryption failed: ${error}`);
   }
 };
 

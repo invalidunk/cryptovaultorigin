@@ -6,8 +6,6 @@ export {
   desDecrypt,
   tripleDesEncrypt,
   tripleDesDecrypt,
-  blowfishEncrypt,
-  blowfishDecrypt,
   rc4Encrypt,
   rc4Decrypt,
   rabbitEncrypt,
@@ -59,7 +57,6 @@ export {
   getImageAlgorithms,
 } from './imageCrypto';
 
-// Define all available encryption algorithms
 export const getAllEncryptionAlgorithms = (): {
   symmetric: string[];
   asymmetric: string[];
@@ -74,7 +71,6 @@ export const getAllEncryptionAlgorithms = (): {
       'AES-256-CTR',
       'DES',
       '3DES',
-      'Blowfish',
       'RC4',
       'Rabbit',
     ],
@@ -84,7 +80,6 @@ export const getAllEncryptionAlgorithms = (): {
   };
 };
 
-// Get algorithm description
 export const getAlgorithmDescription = (algorithm: string): string => {
   const descriptions: Record<string, string> = {
     'AES-256-GCM':
@@ -99,8 +94,6 @@ export const getAlgorithmDescription = (algorithm: string): string => {
       'Data Encryption Standard. Uses a 56-bit key and is obsolete for real security use.',
     '3DES':
       'Triple DES. Stronger than DES but outdated and slower than modern AES modes.',
-    'Blowfish':
-      'Legacy compatibility fallback in this app. It is not implemented as true Blowfish here.',
     'RC4':
       'Legacy stream cipher with known vulnerabilities. Not recommended for modern security use.',
     'Rabbit':
@@ -132,7 +125,6 @@ export const getAlgorithmDescription = (algorithm: string): string => {
   return descriptions[algorithm] || 'No description available.';
 };
 
-// Get algorithm security level
 export const getAlgorithmSecurityLevel = (
   algorithm: string
 ): 'high' | 'medium' | 'low' | 'deprecated' => {
@@ -143,7 +135,6 @@ export const getAlgorithmSecurityLevel = (
     'AES-256-CTR': 'high',
     'DES': 'deprecated',
     '3DES': 'low',
-    'Blowfish': 'low',
     'RC4': 'deprecated',
     'Rabbit': 'medium',
     'RSA-2048': 'high',

@@ -106,7 +106,7 @@ export default function TextEncryption() {
         case 'AES-256-ECB':
         case 'AES-256-CTR': {
           const mode = encryptAlgorithm.split('-')[2];
-          result = aesEncrypt(encryptText, encryptKey, mode);
+          result = await aesEncrypt(encryptText, encryptKey, mode);
           break;
         }
         case 'DES':
@@ -135,7 +135,7 @@ export default function TextEncryption() {
           result = rsaEncrypt(encryptText, rsaKeyPair.publicKey);
           break;
         default:
-          result = aesEncrypt(encryptText, encryptKey);
+          result = await aesEncrypt(encryptText, encryptKey);
       }
 
       setEncryptedResult(result);
@@ -168,7 +168,7 @@ export default function TextEncryption() {
         case 'AES-256-ECB':
         case 'AES-256-CTR': {
           const mode = decryptAlgorithm.split('-')[2];
-          result = aesDecrypt(decryptText, decryptKey, mode);
+          result = await aesDecrypt(decryptText, decryptKey, mode);
           break;
         }
         case 'DES':
@@ -197,7 +197,7 @@ export default function TextEncryption() {
           result = rsaDecrypt(decryptText, rsaKeyPair.privateKey);
           break;
         default:
-          result = aesDecrypt(decryptText, decryptKey);
+          result = await aesDecrypt(decryptText, decryptKey);
       }
 
       if (!result) {

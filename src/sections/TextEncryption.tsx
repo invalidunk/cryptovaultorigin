@@ -28,8 +28,6 @@ import {
   desDecrypt,
   tripleDesEncrypt,
   tripleDesDecrypt,
-  blowfishEncrypt,
-  blowfishDecrypt,
   rc4Encrypt,
   rc4Decrypt,
   rabbitEncrypt,
@@ -52,7 +50,6 @@ const symmetricAlgorithms = [
   { value: 'AES-256-CTR', label: 'AES-256-CTR', security: 'high' },
   { value: 'DES', label: 'DES', security: 'deprecated' },
   { value: '3DES', label: '3DES', security: 'low' },
-  { value: 'Blowfish', label: 'Blowfish', security: 'medium' },
   { value: 'RC4', label: 'RC4', security: 'deprecated' },
   { value: 'Rabbit', label: 'Rabbit', security: 'medium' },
 ];
@@ -115,9 +112,6 @@ export default function TextEncryption() {
         case '3DES':
           result = tripleDesEncrypt(encryptText, encryptKey);
           break;
-        case 'Blowfish':
-          result = blowfishEncrypt(encryptText, encryptKey);
-          break;
         case 'RC4':
           result = rc4Encrypt(encryptText, encryptKey);
           break;
@@ -176,9 +170,6 @@ export default function TextEncryption() {
           break;
         case '3DES':
           result = tripleDesDecrypt(decryptText, decryptKey);
-          break;
-        case 'Blowfish':
-          result = blowfishDecrypt(decryptText, decryptKey);
           break;
         case 'RC4':
           result = rc4Decrypt(decryptText, decryptKey);

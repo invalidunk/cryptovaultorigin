@@ -100,63 +100,36 @@ export default function ImageEncryption() {
     setOriginalMimeType('image/png');
   };
 
-  const handleDecrypt = async () => {
-  if (!decryptFile) {
-    toast.error(tr('errors.missingFile', 'Please select a file'));
-    return;
-  }
-  if (!decryptKey.trim()) {
-    toast.error(tr('errors.missingKey', 'Please enter a key'));
-    return;
-  }
-
-  setIsDecrypting(true);
-
-  try {
-    const encryptedText = await decryptFile.text();
-
-    let algorithmToUse = decryptAlgorithm;
-    let mimeTypeToUse = originalMimeType;
-    let fileNameToUse = originalFileName;
-
-    try {
-      const parsed = JSON.parse(encryptedText);
-
-      if (parsed?.alg && typeof parsed.alg === 'string') {
-        algorithmToUse = parsed.alg;
-      }
-
-      if (parsed?.mimeType && typeof parsed.mimeType === 'string') {
-        mimeTypeToUse = parsed.mimeType;
-      }
-
-      if (parsed?.originalName && typeof parsed.originalName === 'string') {
-        fileNameToUse = parsed.originalName;
-      }
-    } catch {
-      // file không phải JSON thì giữ nguyên state hiện tại
+  const handleEncrypt = async () => {
+    if (!encryptFile) {
+      toast.error(tr('errors.missingFile', 'Please select a file'));
+      return;
+    }
+    if (!encryptKey.trim()) {
+      toast.error(tr('errors.missingKey', 'Please enter a key'));
+      return;
     }
 
-    const result = await decryptImage(
-      encryptedText,
-      decryptKey,
-      algorithmToUse,
-      mimeTypeToUse
-    );
+    setIsEncrypting(true);
+    setEncryptProgress(25);
 
-    setDecryptAlgorithm(algorithmToUse);
-    setOriginalMimeType(mimeTypeToUse);
-    setOriginalFileName(fileNameToUse);
-    setDecryptedImage(result);
+    try {
+      const result = await encryptImage(encryptFile, encryptKey, encryptAlgorithm);
+      setEncryptProgress(70);
 
-    toast.success(tr('imageEncryption.decryptionSuccess', 'Image decrypted successfully'));
-  } catch (error) {
-    toast.error(tr('errors.decryptionFailed', 'Decryption failed. Check your key and algorithm.'));
-    console.error(error);
-  } finally {
-    setIsDecrypting(false);
-  }
-};
+      setEncryptedData(result.encryptedData);
+      setOriginalFileName(result.originalName);
+      setOriginalMimeType(result.mimeType);
+
+      setEncryptProgress(100);
+      toast.success(tr('imageEncryption.encryptionSuccess', 'Image encrypted successfully'));
+    } catch (error) {
+      toast.error(tr('errors.encryptionFailed', 'Encryption failed'));
+      console.error(error);
+    } finally {
+      setIsEncrypting(false);
+    }
+  };
 
   const handleDecrypt = async () => {
     if (!decryptFile) {
@@ -172,14 +145,41 @@ export default function ImageEncryption() {
 
     try {
       const encryptedText = await decryptFile.text();
+
+      let algorithmToUse = decryptAlgorithm;
+      let mimeTypeToUse = originalMimeType;
+      let fileNameToUse = originalFileName;
+
+      try {
+        const parsed = JSON.parse(encryptedText);
+
+        if (parsed?.alg && typeof parsed.alg === 'string') {
+          algorithmToUse = parsed.alg;
+        }
+
+        if (parsed?.mimeType && typeof parsed.mimeType === 'string') {
+          mimeTypeToUse = parsed.mimeType;
+        }
+
+        if (parsed?.originalName && typeof parsed.originalName === 'string') {
+          fileNameToUse = parsed.originalName;
+        }
+      } catch {
+        // file không phải JSON thì giữ nguyên state hiện tại
+      }
+
       const result = await decryptImage(
         encryptedText,
         decryptKey,
-        decryptAlgorithm,
-        originalMimeType
+        algorithmToUse,
+        mimeTypeToUse
       );
 
+      setDecryptAlgorithm(algorithmToUse);
+      setOriginalMimeType(mimeTypeToUse);
+      setOriginalFileName(fileNameToUse);
       setDecryptedImage(result);
+
       toast.success(tr('imageEncryption.decryptionSuccess', 'Image decrypted successfully'));
     } catch (error) {
       toast.error(tr('errors.decryptionFailed', 'Decryption failed. Check your key and algorithm.'));
@@ -439,11 +439,11 @@ export default function ImageEncryption() {
                 onClick={() => decryptInputRef.current?.click()}
               >
                 <input
-  ref={decryptInputRef}
-  type="file"
-  onChange={handleDecryptFileSelect}
-  className="hidden"
-/>
+                  ref={decryptInputRef}
+                  type="file"
+                  onChange={handleDecryptFileSelect}
+                  className="hidden"
+                />
 
                 {decryptFile ? (
                   <div className="space-y-4">
